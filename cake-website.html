@@ -1,0 +1,996 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Compliment Cakes — Life Tastes Sweeter</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+  :root {
+    --pink:    #FF6B9D;
+    --pink-lt: #FFE0EC;
+    --pink-dk: #C8385A;
+    --yellow:  #FFD93D;
+    --yellow-lt:#FFF8D6;
+    --mint:    #6BCBAB;
+    --mint-lt: #D8F5EC;
+    --peach:   #FF9A6C;
+    --peach-lt:#FFE8D8;
+    --lavender:#B08FE8;
+    --lav-lt:  #EDE4FF;
+    --sky:     #5BC8F5;
+    --sky-lt:  #DFF4FD;
+    --cream:   #FFFBF2;
+    --dark:    #2A1F3D;
+    --text:    #3D2C4E;
+    --muted:   #7A6A8A;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'DM Sans', sans-serif;
+    background: var(--cream);
+    color: var(--text);
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+    background: rgba(255,251,242,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 2px solid var(--pink);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 5vw;
+    height: 70px;
+  }
+  .nav-logo {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.4rem; font-weight: 900; color: var(--dark);
+    text-decoration: none; display: flex; align-items: center; gap: 10px;
+  }
+  .nav-logo span { color: var(--pink); }
+  .nav-icon { font-size: 1.6rem; }
+  .nav-links { display: flex; gap: 2rem; list-style: none; }
+  .nav-links a {
+    font-size: 0.9rem; font-weight: 500; color: var(--text);
+    text-decoration: none; letter-spacing: 0.02em;
+    padding: 6px 0; border-bottom: 2px solid transparent;
+    transition: color .2s, border-color .2s;
+  }
+  .nav-links a:hover { color: var(--pink); border-color: var(--pink); }
+  .nav-order {
+    background: var(--pink); color: #fff;
+    border: none; border-radius: 50px; padding: 10px 24px;
+    font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 0.9rem;
+    cursor: pointer; text-decoration: none;
+    transition: background .2s, transform .15s;
+  }
+  .nav-order:hover { background: var(--pink-dk); transform: scale(1.03); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 100vh;
+    display: flex; align-items: center; justify-content: center;
+    position: relative; overflow: hidden;
+    background: linear-gradient(135deg, var(--pink-lt) 0%, var(--yellow-lt) 50%, var(--lav-lt) 100%);
+    padding: 100px 5vw 60px;
+  }
+  .hero-blobs { position: absolute; inset: 0; pointer-events: none; }
+  .blob {
+    position: absolute; border-radius: 50%;
+    opacity: 0.45; animation: float 8s ease-in-out infinite;
+  }
+  .blob1 { width: 400px; height: 400px; background: var(--pink); top: -100px; right: -80px; animation-delay: 0s; }
+  .blob2 { width: 300px; height: 300px; background: var(--yellow); bottom: -60px; left: 5%; animation-delay: 2.5s; }
+  .blob3 { width: 200px; height: 200px; background: var(--mint); top: 40%; left: -60px; animation-delay: 5s; }
+  .blob4 { width: 180px; height: 180px; background: var(--lavender); bottom: 10%; right: 15%; animation-delay: 1.5s; }
+  @keyframes float {
+    0%,100% { transform: translateY(0) scale(1); }
+    50% { transform: translateY(-25px) scale(1.05); }
+  }
+  .hero-content { position: relative; text-align: center; max-width: 700px; }
+  .hero-badge {
+    display: inline-block;
+    background: var(--yellow); color: var(--dark);
+    font-weight: 700; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase;
+    padding: 8px 20px; border-radius: 50px; margin-bottom: 1.5rem;
+    animation: fadeDown 0.8s ease both;
+  }
+  .hero h1 {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(3rem, 8vw, 6rem); font-weight: 900; line-height: 1.05;
+    color: var(--dark); margin-bottom: 1.2rem;
+    animation: fadeDown 0.9s 0.1s ease both;
+  }
+  .hero h1 em { font-style: italic; color: var(--pink); }
+  .hero-sub {
+    font-size: 1.15rem; color: var(--muted); line-height: 1.7;
+    max-width: 480px; margin: 0 auto 2.5rem;
+    animation: fadeDown 1s 0.2s ease both;
+  }
+  .hero-ctas { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;
+    animation: fadeDown 1s 0.3s ease both; }
+  .btn-primary {
+    background: var(--pink); color: #fff;
+    padding: 16px 36px; border-radius: 50px;
+    font-weight: 600; font-size: 1rem; text-decoration: none;
+    transition: transform .2s, box-shadow .2s;
+    box-shadow: 0 6px 24px rgba(255,107,157,0.4);
+  }
+  .btn-primary:hover { transform: translateY(-3px); box-shadow: 0 10px 30px rgba(255,107,157,0.5); }
+  .btn-secondary {
+    background: #fff; color: var(--dark);
+    padding: 16px 36px; border-radius: 50px;
+    font-weight: 600; font-size: 1rem; text-decoration: none;
+    border: 2px solid var(--dark);
+    transition: background .2s, transform .2s;
+  }
+  .btn-secondary:hover { background: var(--dark); color: #fff; transform: translateY(-3px); }
+  .hero-floaties { position: absolute; inset: 0; pointer-events: none; }
+  .floaty {
+    position: absolute; font-size: 2.5rem;
+    animation: spin-float 10s linear infinite;
+    opacity: 0.7;
+  }
+  .f1{top:12%;left:8%;animation-duration:9s;animation-delay:0s;}
+  .f2{top:20%;right:10%;animation-duration:11s;animation-delay:1s;}
+  .f3{bottom:20%;left:12%;animation-duration:8s;animation-delay:2s;}
+  .f4{bottom:15%;right:8%;animation-duration:12s;animation-delay:3s;}
+  .f5{top:50%;left:4%;animation-duration:10s;animation-delay:0.5s;}
+  @keyframes spin-float {
+    0%{transform:translateY(0) rotate(0deg);}
+    50%{transform:translateY(-20px) rotate(180deg);}
+    100%{transform:translateY(0) rotate(360deg);}
+  }
+  @keyframes fadeDown {
+    from{opacity:0;transform:translateY(-20px);}
+    to{opacity:1;transform:translateY(0);}
+  }
+
+  /* ── SECTIONS SHARED ── */
+  section { padding: 100px 5vw; }
+  .section-label {
+    display: inline-block;
+    font-size: 0.75rem; font-weight: 700; letter-spacing: 0.15em; text-transform: uppercase;
+    padding: 6px 18px; border-radius: 50px; margin-bottom: 1rem;
+  }
+  .section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(2rem, 4vw, 3rem); font-weight: 900; color: var(--dark);
+    line-height: 1.15; margin-bottom: 1rem;
+  }
+  .section-sub { font-size: 1.05rem; color: var(--muted); line-height: 1.7; max-width: 500px; }
+
+  /* ── ABOUT ── */
+  .about { background: #fff; }
+  .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6vw; align-items: center; max-width: 1100px; margin: 0 auto; }
+  .about-text .section-label { background: var(--pink-lt); color: var(--pink-dk); }
+  .about-visual { position: relative; display: flex; justify-content: center; }
+  .about-cake-box {
+    width: 340px; height: 340px; border-radius: 50%;
+    background: linear-gradient(135deg, var(--pink-lt), var(--yellow-lt));
+    display: flex; align-items: center; justify-content: center;
+    font-size: 9rem; position: relative;
+    border: 6px solid var(--pink);
+    animation: gentle-spin 20s linear infinite;
+    flex-shrink: 0;
+  }
+  @keyframes gentle-spin {
+    from{transform:rotate(0deg);}
+    to{transform:rotate(360deg);}
+  }
+  .about-cake-box .inner { animation: gentle-spin 20s linear reverse infinite; }
+  .about-stats { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; margin-top: 2.5rem; }
+  .stat-card {
+    background: var(--cream); border-radius: 16px; padding: 1.2rem;
+    border-left: 4px solid var(--pink);
+  }
+  .stat-card h3 { font-family: 'Playfair Display', serif; font-size: 2rem; color: var(--pink); margin-bottom: .2rem; }
+  .stat-card p { font-size: 0.85rem; color: var(--muted); }
+
+  /* ── MENU ── */
+  .menu { background: var(--cream); }
+  .menu-header { text-align: center; margin-bottom: 4rem; }
+  .menu-header .section-label { background: var(--mint-lt); color: #1a7a5a; }
+  .menu-tabs { display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap; margin-bottom: 3rem; }
+  .tab-btn {
+    padding: 12px 28px; border-radius: 50px; font-weight: 600; font-size: 0.9rem;
+    border: 2px solid transparent; cursor: pointer; transition: all .2s;
+    font-family: 'DM Sans', sans-serif;
+  }
+  .tab-btn.active, .tab-btn:hover {
+    background: var(--pink); color: #fff; border-color: var(--pink);
+  }
+  .tab-btn:not(.active) { background: #fff; color: var(--text); border-color: #E0D8F0; }
+  .menu-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(290px, 1fr)); gap: 2rem; max-width: 1100px; margin: 0 auto; }
+  .menu-card {
+    background: #fff; border-radius: 24px; overflow: hidden;
+    transition: transform .25s, box-shadow .25s;
+    border: 2px solid transparent;
+  }
+  .menu-card:hover { transform: translateY(-8px); box-shadow: 0 20px 40px rgba(42,31,61,0.12); }
+  .menu-card-img {
+    height: 180px; display: flex; align-items: center; justify-content: center;
+    font-size: 5rem; position: relative; overflow: hidden;
+  }
+  .menu-card-body { padding: 1.5rem; }
+  .menu-card-body h3 { font-family: 'Playfair Display', serif; font-size: 1.25rem; margin-bottom: .4rem; color: var(--dark); }
+  .menu-card-body p { font-size: 0.9rem; color: var(--muted); line-height: 1.6; margin-bottom: 1rem; }
+  .menu-card-footer { display: flex; justify-content: space-between; align-items: center; }
+  .price { font-weight: 700; font-size: 1.1rem; color: var(--pink); }
+  .order-btn {
+    background: var(--dark); color: #fff; border: none; border-radius: 50px;
+    padding: 8px 20px; font-size: 0.85rem; font-weight: 600; cursor: pointer;
+    transition: background .2s;
+  }
+  .order-btn:hover { background: var(--pink); }
+  .tag {
+    display: inline-block; font-size: 0.72rem; font-weight: 700; text-transform: uppercase;
+    letter-spacing: 0.08em; padding: 4px 12px; border-radius: 50px; margin-bottom: .8rem;
+  }
+
+  /* ── SPECIALS ── */
+  .specials { background: var(--dark); color: #fff; }
+  .specials .section-label { background: rgba(255,215,61,0.2); color: var(--yellow); }
+  .specials .section-title { color: #fff; }
+  .specials .section-sub { color: rgba(255,255,255,0.6); }
+  .specials-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 1.5rem; max-width: 1100px; margin: 3rem auto 0; }
+  .special-card {
+    border-radius: 20px; padding: 2rem; position: relative; overflow: hidden;
+    transition: transform .25s;
+  }
+  .special-card:hover { transform: translateY(-6px); }
+  .special-card h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; margin-bottom: .6rem; }
+  .special-card p { font-size: 0.9rem; line-height: 1.6; opacity: 0.85; }
+  .special-card .special-icon { font-size: 3rem; margin-bottom: 1rem; display: block; }
+  .sc1 { background: linear-gradient(135deg, #FF6B9D22, #FF6B9D55); border: 2px solid var(--pink); color: #fff; }
+  .sc2 { background: linear-gradient(135deg, #FFD93D22, #FFD93D55); border: 2px solid var(--yellow); color: #fff; }
+  .sc3 { background: linear-gradient(135deg, #6BCBAB22, #6BCBAB55); border: 2px solid var(--mint); color: #fff; }
+  .sc4 { background: linear-gradient(135deg, #B08FE822, #B08FE855); border: 2px solid var(--lavender); color: #fff; }
+
+  /* ── HOW IT WORKS ── */
+  .how { background: var(--lav-lt); }
+  .how .section-label { background: var(--lav-lt); color: #6040b0; }
+  .how-header { text-align: center; margin-bottom: 4rem; }
+  .steps { display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem; max-width: 1000px; margin: 0 auto; position: relative; }
+  .steps::before {
+    content: '';
+    position: absolute; top: 50px; left: 15%; right: 15%; height: 3px;
+    background: repeating-linear-gradient(90deg, var(--lavender) 0, var(--lavender) 20px, transparent 20px, transparent 30px);
+    pointer-events: none;
+  }
+  .step { text-align: center; padding: 2rem 1.5rem; background: #fff; border-radius: 20px; position: relative; }
+  .step-num {
+    width: 60px; height: 60px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-family: 'Playfair Display', serif; font-size: 1.4rem; font-weight: 900;
+    margin: 0 auto 1.2rem; color: #fff;
+  }
+  .sn1{background:var(--pink);}
+  .sn2{background:var(--mint);}
+  .sn3{background:var(--yellow); color: var(--dark) !important;}
+  .sn4{background:var(--lavender);}
+  .step h3 { font-family: 'Playfair Display', serif; font-size: 1.1rem; margin-bottom: .5rem; color: var(--dark); }
+  .step p { font-size: 0.88rem; color: var(--muted); line-height: 1.6; }
+
+  /* ── GALLERY ── */
+  .gallery { background: #fff; }
+  .gallery .section-label { background: var(--peach-lt); color: #c45a20; }
+  .gallery-header { text-align: center; margin-bottom: 3rem; }
+  .gallery-grid { display: grid; grid-template-columns: repeat(4, 1fr); grid-template-rows: auto auto; gap: 1rem; max-width: 1100px; margin: 0 auto; }
+  .gallery-item {
+    border-radius: 16px; overflow: hidden; position: relative;
+    background: var(--pink-lt); display: flex; align-items: center; justify-content: center;
+    font-size: 5rem; transition: transform .3s;
+    aspect-ratio: 1;
+    cursor: pointer;
+  }
+  .gallery-item:hover { transform: scale(1.03); z-index: 2; }
+  .gallery-item.wide { grid-column: span 2; aspect-ratio: 2/1; }
+  .gallery-item.tall { grid-row: span 2; aspect-ratio: 1/2; }
+  .gi1{background: linear-gradient(135deg, #FFE0EC, #FFF8D6);}
+  .gi2{background: linear-gradient(135deg, #D8F5EC, #DFF4FD);}
+  .gi3{background: linear-gradient(135deg, #EDE4FF, #FFE0EC);}
+  .gi4{background: linear-gradient(135deg, #FFE8D8, #FFF8D6);}
+  .gi5{background: linear-gradient(135deg, #DFF4FD, #EDE4FF);}
+  .gi6{background: linear-gradient(135deg, #FFF8D6, #D8F5EC);}
+  .gallery-overlay {
+    position: absolute; inset: 0; background: rgba(42,31,61,0.0);
+    display: flex; align-items: flex-end; padding: 1rem;
+    transition: background .3s;
+  }
+  .gallery-item:hover .gallery-overlay { background: rgba(42,31,61,0.35); }
+  .gallery-overlay span {
+    color: #fff; font-weight: 600; font-size: 0.9rem; opacity: 0;
+    transition: opacity .3s; transform: translateY(8px);
+    transition: opacity .3s, transform .3s;
+  }
+  .gallery-item:hover .gallery-overlay span { opacity: 1; transform: translateY(0); }
+
+  /* ── TESTIMONIALS ── */
+  .testimonials { background: linear-gradient(135deg, var(--pink-lt), var(--yellow-lt)); }
+  .testimonials .section-label { background: var(--pink-lt); color: var(--pink-dk); }
+  .test-header { text-align: center; margin-bottom: 3rem; }
+  .test-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.5rem; max-width: 1100px; margin: 0 auto; }
+  .test-card {
+    background: #fff; border-radius: 20px; padding: 2rem;
+    position: relative; transition: transform .25s;
+  }
+  .test-card:hover { transform: translateY(-5px); }
+  .test-card::before {
+    content: '"'; position: absolute; top: -10px; left: 20px;
+    font-family: 'Playfair Display', serif; font-size: 5rem; color: var(--pink); line-height: 1;
+  }
+  .test-text { font-size: 0.95rem; line-height: 1.7; color: var(--text); margin-bottom: 1.5rem; padding-top: 1rem; }
+  .test-author { display: flex; align-items: center; gap: 12px; }
+  .test-avatar {
+    width: 44px; height: 44px; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.4rem; flex-shrink: 0;
+  }
+  .test-name { font-weight: 700; font-size: 0.9rem; color: var(--dark); }
+  .test-stars { color: var(--yellow); font-size: 0.85rem; }
+
+  /* ── FAQ ── */
+  .faq { background: #fff; }
+  .faq .section-label { background: var(--sky-lt); color: #0a6080; }
+  .faq-header { text-align: center; margin-bottom: 3rem; }
+  .faq-wrap { max-width: 700px; margin: 0 auto; }
+  .faq-item { border-bottom: 2px solid var(--pink-lt); }
+  .faq-q {
+    width: 100%; background: none; border: none; text-align: left;
+    font-family: 'DM Sans', sans-serif; font-weight: 600; font-size: 1rem; color: var(--dark);
+    padding: 1.4rem 0; cursor: pointer; display: flex; justify-content: space-between; align-items: center;
+    gap: 1rem;
+  }
+  .faq-icon { flex-shrink: 0; font-size: 1.4rem; color: var(--pink); transition: transform .3s; }
+  .faq-item.open .faq-icon { transform: rotate(45deg); }
+  .faq-a { font-size: 0.93rem; color: var(--muted); line-height: 1.7; max-height: 0; overflow: hidden; transition: max-height .4s ease, padding .3s; }
+  .faq-item.open .faq-a { max-height: 200px; padding-bottom: 1.2rem; }
+
+  /* ── CONTACT ── */
+  .contact { background: var(--dark); color: #fff; }
+  .contact-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 6vw; max-width: 1100px; margin: 0 auto; }
+  .contact-info .section-label { background: rgba(255,107,157,0.2); color: var(--pink); }
+  .contact-info .section-title { color: #fff; }
+  .contact-info .section-sub { color: rgba(255,255,255,0.6); }
+  .contact-details { margin-top: 2.5rem; display: flex; flex-direction: column; gap: 1.2rem; }
+  .contact-detail { display: flex; gap: 1rem; align-items: flex-start; }
+  .detail-icon {
+    width: 44px; height: 44px; border-radius: 12px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 1.2rem; flex-shrink: 0;
+  }
+  .di-pink  { background: rgba(255,107,157,0.2); }
+  .di-mint  { background: rgba(107,203,171,0.2); }
+  .di-yellow{ background: rgba(255,217,61,0.2); }
+  .di-lav   { background: rgba(176,143,232,0.2); }
+  .detail-text p:first-child { font-weight: 600; font-size: 0.85rem; color: rgba(255,255,255,0.5); margin-bottom: .2rem; text-transform: uppercase; letter-spacing: 0.1em; }
+  .detail-text p:last-child { color: #fff; font-size: 0.95rem; }
+  .contact-form { background: rgba(255,255,255,0.06); border-radius: 24px; padding: 2.5rem; border: 1px solid rgba(255,255,255,0.1); }
+  .contact-form h3 { font-family: 'Playfair Display', serif; font-size: 1.5rem; color: #fff; margin-bottom: 1.5rem; }
+  .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+  .form-group { margin-bottom: 1.2rem; }
+  .form-group label { display: block; font-size: 0.82rem; font-weight: 600; color: rgba(255,255,255,0.6); margin-bottom: .5rem; text-transform: uppercase; letter-spacing: 0.08em; }
+  .form-group input, .form-group select, .form-group textarea {
+    width: 100%; background: rgba(255,255,255,0.08); border: 1.5px solid rgba(255,255,255,0.15);
+    border-radius: 12px; padding: 12px 16px; color: #fff; font-family: 'DM Sans', sans-serif; font-size: 0.95rem;
+    transition: border-color .2s;
+  }
+  .form-group input::placeholder, .form-group textarea::placeholder { color: rgba(255,255,255,0.35); }
+  .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+    outline: none; border-color: var(--pink);
+  }
+  .form-group select option { background: var(--dark); }
+  .form-group textarea { height: 100px; resize: vertical; }
+  .submit-btn {
+    width: 100%; background: var(--pink); color: #fff; border: none;
+    border-radius: 50px; padding: 16px; font-family: 'DM Sans', sans-serif;
+    font-size: 1rem; font-weight: 700; cursor: pointer;
+    transition: background .2s, transform .15s;
+    box-shadow: 0 6px 24px rgba(255,107,157,0.35);
+  }
+  .submit-btn:hover { background: var(--pink-dk); transform: translateY(-2px); }
+
+  /* ── FOOTER ── */
+  footer {
+    background: #1A1030; color: rgba(255,255,255,0.7);
+    padding: 60px 5vw 30px;
+  }
+  .footer-grid { display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 3rem; margin-bottom: 4rem; max-width: 1100px; margin: 0 auto 3rem; }
+  .footer-brand .nav-logo { margin-bottom: 1rem; display: block; }
+  .footer-brand p { font-size: 0.9rem; line-height: 1.7; }
+  .footer-col h4 { color: #fff; font-weight: 700; font-size: 0.9rem; text-transform: uppercase; letter-spacing: 0.1em; margin-bottom: 1.2rem; }
+  .footer-col ul { list-style: none; display: flex; flex-direction: column; gap: .7rem; }
+  .footer-col a { color: rgba(255,255,255,0.6); text-decoration: none; font-size: 0.9rem; transition: color .2s; }
+  .footer-col a:hover { color: var(--pink); }
+  .footer-social { display: flex; gap: .8rem; margin-top: 1.5rem; }
+  .social-btn {
+    width: 40px; height: 40px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+    font-size: 1.1rem; text-decoration: none; transition: transform .2s;
+  }
+  .social-btn:hover { transform: scale(1.15); }
+  .sb-ig { background: linear-gradient(135deg, var(--peach), var(--pink)); }
+  .sb-fb { background: #3b5998; }
+  .sb-wa { background: #25d366; }
+  .footer-bottom {
+    border-top: 1px solid rgba(255,255,255,0.1);
+    padding-top: 1.5rem; text-align: center;
+    font-size: 0.85rem; color: rgba(255,255,255,0.4);
+    max-width: 1100px; margin: 0 auto;
+  }
+
+  /* ── SCROLL REVEAL ── */
+  .reveal { opacity: 0; transform: translateY(30px); transition: opacity .7s, transform .7s; }
+  .reveal.visible { opacity: 1; transform: translateY(0); }
+
+  /* ── RESPONSIVE ── */
+  @media(max-width: 900px) {
+    .about-grid, .contact-grid { grid-template-columns: 1fr; }
+    .about-visual { display: none; }
+    .gallery-grid { grid-template-columns: repeat(2, 1fr); }
+    .gallery-item.wide { grid-column: span 1; aspect-ratio: 1; }
+    .footer-grid { grid-template-columns: 1fr 1fr; }
+  }
+  @media(max-width: 600px) {
+    .nav-links { display: none; }
+    .steps::before { display: none; }
+    .form-row { grid-template-columns: 1fr; }
+    .gallery-grid { grid-template-columns: 1fr 1fr; }
+    .footer-grid { grid-template-columns: 1fr; }
+  }
+
+  /* toast */
+  .toast {
+    position: fixed; bottom: 30px; right: 30px; z-index: 999;
+    background: var(--dark); color: #fff; padding: 14px 24px;
+    border-radius: 50px; font-weight: 600; font-size: 0.9rem;
+    border-left: 4px solid var(--mint);
+    transform: translateY(100px); opacity: 0;
+    transition: transform .4s, opacity .4s;
+    pointer-events: none;
+  }
+  .toast.show { transform: translateY(0); opacity: 1; }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <a class="nav-logo" href="#">
+    <span class="nav-icon">🎂</span>
+    Compliment <span>Cakes</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#about">About</a></li>
+    <li><a href="#menu">Menu</a></li>
+    <li><a href="#gallery">Gallery</a></li>
+    <li><a href="#how">How It Works</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <a class="nav-order" href="#contact">Order Now</a>
+</nav>
+
+<!-- HERO -->
+<section class="hero" id="home">
+  <div class="hero-blobs">
+    <div class="blob blob1"></div>
+    <div class="blob blob2"></div>
+    <div class="blob blob3"></div>
+    <div class="blob blob4"></div>
+  </div>
+  <div class="hero-floaties">
+    <span class="floaty f1">🌸</span>
+    <span class="floaty f2">✨</span>
+    <span class="floaty f3">🌿</span>
+    <span class="floaty f4">🎀</span>
+    <span class="floaty f5">⭐</span>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">✨ Handcrafted in Yerevan, Armenia</div>
+    <h1>Every Cake is a<br><em>Compliment</em></h1>
+    <p class="hero-sub">Artisanal cakes baked with love and delivered with joy. Custom creations for every milestone, celebration, and sweet craving.</p>
+    <div class="hero-ctas">
+      <a class="btn-primary" href="#menu">Explore the Menu</a>
+      <a class="btn-secondary" href="#contact">Order a Custom Cake</a>
+    </div>
+  </div>
+</section>
+
+<!-- ABOUT -->
+<section class="about" id="about">
+  <div class="about-grid">
+    <div class="about-text reveal">
+      <span class="section-label">Our Story</span>
+      <h2 class="section-title">Born from passion,<br>baked with heart</h2>
+      <p class="section-sub">Compliment Cakes was founded on the belief that the best compliment you can give someone is a beautifully crafted cake. Every layer tells a story, every decoration is a detail of care.</p>
+      <div class="about-stats">
+        <div class="stat-card">
+          <h3>500+</h3>
+          <p>Custom cakes delivered</p>
+        </div>
+        <div class="stat-card">
+          <h3>7+</h3>
+          <p>Years of sweet memories</p>
+        </div>
+        <div class="stat-card">
+          <h3>100%</h3>
+          <p>Natural ingredients</p>
+        </div>
+        <div class="stat-card">
+          <h3>5⭐</h3>
+          <p>Average customer rating</p>
+        </div>
+      </div>
+    </div>
+    <div class="about-visual reveal">
+      <div class="about-cake-box">
+        <span class="inner">🎂</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- MENU -->
+<section class="menu" id="menu">
+  <div class="menu-header reveal">
+    <span class="section-label">Our Creations</span>
+    <h2 class="section-title">A cake for every occasion</h2>
+    <p class="section-sub" style="margin:0 auto;">From intimate birthdays to grand celebrations — we have the perfect cake waiting for you.</p>
+  </div>
+  <div class="menu-tabs reveal">
+    <button class="tab-btn active" onclick="filterMenu('all', this)">All Cakes</button>
+    <button class="tab-btn" onclick="filterMenu('birthday', this)">Birthday</button>
+    <button class="tab-btn" onclick="filterMenu('wedding', this)">Wedding</button>
+    <button class="tab-btn" onclick="filterMenu('custom', this)">Custom</button>
+    <button class="tab-btn" onclick="filterMenu('seasonal', this)">Seasonal</button>
+  </div>
+  <div class="menu-grid" id="menu-grid">
+
+    <div class="menu-card reveal" data-cat="birthday">
+      <div class="menu-card-img" style="background:linear-gradient(135deg,#FFE0EC,#FFF8D6);">🎂</div>
+      <div class="menu-card-body">
+        <span class="tag" style="background:var(--pink-lt);color:var(--pink-dk);">Birthday</span>
+        <h3>Classic Celebration Cake</h3>
+        <p>Fluffy vanilla sponge with fresh cream, fruit layers and a custom message piped on top.</p>
+        <div class="menu-card-footer">
+          <span class="price">From ֏8,500</span>
+          <button class="order-btn" onclick="addToOrder('Classic Celebration Cake')">Add to Order</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal" data-cat="birthday">
+      <div class="menu-card-img" style="background:linear-gradient(135deg,#D8F5EC,#DFF4FD);">🍫</div>
+      <div class="menu-card-body">
+        <span class="tag" style="background:var(--mint-lt);color:#1a7a5a;">Best Seller</span>
+        <h3>Dark Chocolate Dream</h3>
+        <p>Rich dark chocolate layers filled with ganache and coffee cream — pure indulgence.</p>
+        <div class="menu-card-footer">
+          <span class="price">From ֏9,200</span>
+          <button class="order-btn" onclick="addToOrder('Dark Chocolate Dream')">Add to Order</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal" data-cat="wedding">
+      <div class="menu-card-img" style="background:linear-gradient(135deg,#EDE4FF,#FFE0EC);">💍</div>
+      <div class="menu-card-body">
+        <span class="tag" style="background:var(--lav-lt);color:#6040b0;">Wedding</span>
+        <h3>Royal Wedding Tier</h3>
+        <p>Elegant multi-tier masterpiece with fondant florals, ribbon detail, and any flavor combination.</p>
+        <div class="menu-card-footer">
+          <span class="price">From ֏35,000</span>
+          <button class="order-btn" onclick="addToOrder('Royal Wedding Tier')">Add to Order</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal" data-cat="custom">
+      <div class="menu-card-img" style="background:linear-gradient(135deg,#FFE8D8,#FFF8D6);">🎨</div>
+      <div class="menu-card-body">
+        <span class="tag" style="background:var(--peach-lt);color:#c45a20;">Custom</span>
+        <h3>Designer Sculpture Cake</h3>
+        <p>3D sculpted cakes shaped into anything you can dream — characters, objects, scenes.</p>
+        <div class="menu-card-footer">
+          <span class="price">From ֏18,000</span>
+          <button class="order-btn" onclick="addToOrder('Designer Sculpture Cake')">Add to Order</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal" data-cat="seasonal">
+      <div class="menu-card-img" style="background:linear-gradient(135deg,#DFF4FD,#EDE4FF);">🍓</div>
+      <div class="menu-card-body">
+        <span class="tag" style="background:var(--sky-lt);color:#0a6080;">Seasonal</span>
+        <h3>Summer Strawberry Cloud</h3>
+        <p>Light chiffon layers with fresh seasonal strawberries and whipped cloud cream.</p>
+        <div class="menu-card-footer">
+          <span class="price">From ֏10,500</span>
+          <button class="order-btn" onclick="addToOrder('Summer Strawberry Cloud')">Add to Order</button>
+        </div>
+      </div>
+    </div>
+
+    <div class="menu-card reveal" data-cat="birthday custom">
+      <div class="menu-card-img" style="background:linear-gradient(135deg,#FFF8D6,#D8F5EC);">🌸</div>
+      <div class="menu-card-body">
+        <span class="tag" style="background:var(--yellow-lt);color:#8a6a00;">New</span>
+        <h3>Flower Garden Cake</h3>
+        <p>Edible sugar flowers hand-sculpted into a living garden on a pistachio cream base.</p>
+        <div class="menu-card-footer">
+          <span class="price">From ֏14,000</span>
+          <button class="order-btn" onclick="addToOrder('Flower Garden Cake')">Add to Order</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- SPECIALS -->
+<section class="specials" id="specials">
+  <div style="max-width:1100px;margin:0 auto;">
+    <span class="section-label">Special Offers</span>
+    <h2 class="section-title">Sweet deals worth celebrating</h2>
+    <p class="section-sub">Extra sweetness for every budget and occasion.</p>
+    <div class="specials-grid">
+      <div class="special-card sc1 reveal">
+        <span class="special-icon">🎉</span>
+        <h3>Birthday Package</h3>
+        <p>Cake + 12 matching cupcakes + custom card. Save 15% when you bundle.</p>
+      </div>
+      <div class="special-card sc2 reveal">
+        <span class="special-icon">💌</span>
+        <h3>Pre-Order Discount</h3>
+        <p>Order 2+ weeks in advance and receive 10% off any custom creation.</p>
+      </div>
+      <div class="special-card sc3 reveal">
+        <span class="special-icon">👰</span>
+        <h3>Wedding Season</h3>
+        <p>Free tasting session for all wedding cake orders over ֏50,000.</p>
+      </div>
+      <div class="special-card sc4 reveal">
+        <span class="special-icon">🔁</span>
+        <h3>Loyalty Reward</h3>
+        <p>Your 5th order gets a complimentary box of decorated mini cupcakes.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WORKS -->
+<section class="how" id="how">
+  <div class="how-header reveal">
+    <span class="section-label">How It Works</span>
+    <h2 class="section-title">Your dream cake in 4 steps</h2>
+    <p class="section-sub" style="margin:0 auto;">Simple, delightful, and entirely personalized from start to first bite.</p>
+  </div>
+  <div class="steps">
+    <div class="step reveal">
+      <div class="step-num sn1">1</div>
+      <h3>Tell Us Your Dream</h3>
+      <p>Fill out our order form with your flavor, design, date, and occasion. No idea too big!</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num sn2">2</div>
+      <h3>We Confirm & Plan</h3>
+      <p>Our team reviews your order, suggests ideas, and confirms every detail before we begin.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num sn3">3</div>
+      <h3>Baked with Love</h3>
+      <p>Your cake is crafted fresh using premium ingredients by our expert pastry artisans.</p>
+    </div>
+    <div class="step reveal">
+      <div class="step-num sn4">4</div>
+      <h3>Delivered to You</h3>
+      <p>Carefully packaged and delivered right to your door — or collected from our studio.</p>
+    </div>
+  </div>
+</section>
+
+<!-- GALLERY -->
+<section class="gallery" id="gallery">
+  <div class="gallery-header reveal">
+    <span class="section-label">Cake Gallery</span>
+    <h2 class="section-title">Made with love, delivered with joy</h2>
+  </div>
+  <div class="gallery-grid reveal">
+    <div class="gallery-item gi1 wide">
+      <span>🎂</span>
+      <div class="gallery-overlay"><span>Birthday Masterpiece</span></div>
+    </div>
+    <div class="gallery-item gi2">
+      <span>🌸</span>
+      <div class="gallery-overlay"><span>Floral Garden</span></div>
+    </div>
+    <div class="gallery-item gi3">
+      <span>💍</span>
+      <div class="gallery-overlay"><span>Wedding Tier</span></div>
+    </div>
+    <div class="gallery-item gi4">
+      <span>🍫</span>
+      <div class="gallery-overlay"><span>Chocolate Dream</span></div>
+    </div>
+    <div class="gallery-item gi5">
+      <span>🎨</span>
+      <div class="gallery-overlay"><span>Custom Sculpture</span></div>
+    </div>
+    <div class="gallery-item gi6 wide">
+      <span>🍓</span>
+      <div class="gallery-overlay"><span>Summer Seasonal</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- TESTIMONIALS -->
+<section class="testimonials" id="reviews">
+  <div class="test-header reveal">
+    <span class="section-label">Happy Customers</span>
+    <h2 class="section-title">Words that sweeten our day</h2>
+  </div>
+  <div class="test-grid">
+    <div class="test-card reveal">
+      <p class="test-text">The wedding cake was beyond anything I could have imagined. Every guest was speechless. Compliment Cakes truly outdid themselves.</p>
+      <div class="test-author">
+        <div class="test-avatar" style="background:var(--pink-lt);">👰</div>
+        <div>
+          <div class="test-name">Ani Harutyunyan</div>
+          <div class="test-stars">★★★★★</div>
+        </div>
+      </div>
+    </div>
+    <div class="test-card reveal">
+      <p class="test-text">Ordered a sculpted dinosaur cake for my son's 5th birthday. He literally screamed with joy. The detail was unbelievable for the price!</p>
+      <div class="test-author">
+        <div class="test-avatar" style="background:var(--mint-lt);">👨</div>
+        <div>
+          <div class="test-name">David Mkrtchyan</div>
+          <div class="test-stars">★★★★★</div>
+        </div>
+      </div>
+    </div>
+    <div class="test-card reveal">
+      <p class="test-text">Absolutely amazing chocolate cake. Moist, rich, and the ganache was perfect. I've already ordered three times and will never go anywhere else.</p>
+      <div class="test-author">
+        <div class="test-avatar" style="background:var(--lav-lt);">👩</div>
+        <div>
+          <div class="test-name">Nare Petrosyan</div>
+          <div class="test-stars">★★★★★</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="faq" id="faq">
+  <div class="faq-header reveal">
+    <span class="section-label">FAQ</span>
+    <h2 class="section-title">Questions? We've got answers</h2>
+  </div>
+  <div class="faq-wrap reveal">
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">How far in advance should I order? <span class="faq-icon">+</span></button>
+      <div class="faq-a">We recommend ordering at least 5–7 days in advance for standard cakes, and 2+ weeks for custom or wedding cakes to ensure the best result.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Do you offer delivery? <span class="faq-icon">+</span></button>
+      <div class="faq-a">Yes! We offer delivery within Yerevan. Delivery fees depend on the distance. You can also pick up your cake from our studio free of charge.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Can I request custom flavors and designs? <span class="faq-icon">+</span></button>
+      <div class="faq-a">Absolutely. Custom creations are our specialty. Just describe your vision in the order form and we'll make it happen — no idea is too wild!</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">Do you offer gluten-free or vegan options? <span class="faq-icon">+</span></button>
+      <div class="faq-a">Yes, we have gluten-free and vegan-friendly options available. Please mention your dietary requirements when placing your order.</div>
+    </div>
+    <div class="faq-item">
+      <button class="faq-q" onclick="toggleFaq(this)">How do I make payment? <span class="faq-icon">+</span></button>
+      <div class="faq-a">We accept cash, bank transfer, and most major cards. A 50% deposit is required to confirm custom orders, with the balance due on delivery.</div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact" id="contact">
+  <div class="contact-grid">
+    <div class="contact-info reveal">
+      <span class="section-label">Get in Touch</span>
+      <h2 class="section-title">Let's bake<br>something special</h2>
+      <p class="section-sub">Ready to place an order or just want to say hello? We'd love to hear from you.</p>
+      <div class="contact-details">
+        <div class="contact-detail">
+          <div class="detail-icon di-pink">📍</div>
+          <div class="detail-text">
+            <p>Location</p>
+            <p>Yerevan, Armenia</p>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="detail-icon di-mint">📞</div>
+          <div class="detail-text">
+            <p>Phone</p>
+            <p>+374 XX XXX XXX</p>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="detail-icon di-yellow">✉️</div>
+          <div class="detail-text">
+            <p>Email</p>
+            <p>hello@complimentcakes.am</p>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="detail-icon di-lav">🕐</div>
+          <div class="detail-text">
+            <p>Hours</p>
+            <p>Mon–Sat: 10:00 – 20:00</p>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="contact-form reveal">
+      <h3>Place Your Order 🎂</h3>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Your Name</label>
+          <input type="text" placeholder="Ani Harutyunyan" id="f-name">
+        </div>
+        <div class="form-group">
+          <label>Phone / Email</label>
+          <input type="text" placeholder="+374 or email" id="f-contact">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Cake Type</label>
+        <select id="f-type">
+          <option value="">Select cake type...</option>
+          <option>Birthday Cake</option>
+          <option>Wedding Cake</option>
+          <option>Custom / Sculpted</option>
+          <option>Seasonal Special</option>
+          <option>Cupcake Bundle</option>
+        </select>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Occasion Date</label>
+          <input type="date" id="f-date">
+        </div>
+        <div class="form-group">
+          <label>Number of Servings</label>
+          <input type="number" placeholder="e.g. 20" id="f-servings" min="1">
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Describe Your Dream Cake</label>
+        <textarea placeholder="Tell us about flavors, colors, theme, inscription..." id="f-desc"></textarea>
+      </div>
+      <button class="submit-btn" onclick="submitOrder()">Send My Order Request 🎀</button>
+    </div>
+  </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+  <div class="footer-grid">
+    <div class="footer-brand">
+      <a class="nav-logo" href="#">🎂 Compliment <span>Cakes</span></a>
+      <p>Handcrafted cakes for every celebration. Made with love in Yerevan, Armenia.</p>
+      <div class="footer-social">
+        <a class="social-btn sb-ig" href="#" title="Instagram">📷</a>
+        <a class="social-btn sb-fb" href="#" title="Facebook">👤</a>
+        <a class="social-btn sb-wa" href="#" title="WhatsApp">💬</a>
+      </div>
+    </div>
+    <div class="footer-col">
+      <h4>Menu</h4>
+      <ul>
+        <li><a href="#menu">Birthday Cakes</a></li>
+        <li><a href="#menu">Wedding Cakes</a></li>
+        <li><a href="#menu">Custom Cakes</a></li>
+        <li><a href="#menu">Seasonal Specials</a></li>
+        <li><a href="#menu">Cupcakes</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Company</h4>
+      <ul>
+        <li><a href="#about">Our Story</a></li>
+        <li><a href="#gallery">Gallery</a></li>
+        <li><a href="#reviews">Reviews</a></li>
+        <li><a href="#how">How It Works</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+    </div>
+    <div class="footer-col">
+      <h4>Order</h4>
+      <ul>
+        <li><a href="#contact">Place an Order</a></li>
+        <li><a href="#specials">Special Offers</a></li>
+        <li><a href="#contact">Custom Design</a></li>
+        <li><a href="#contact">Wedding Inquiry</a></li>
+        <li><a href="#faq">Delivery Info</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="footer-bottom">
+    <p>© 2025 Compliment Cakes · Yerevan, Armenia · Made with 💖 and great flour</p>
+  </div>
+</footer>
+
+<!-- TOAST -->
+<div class="toast" id="toast"></div>
+
+<script>
+  // Scroll reveal
+  const reveals = document.querySelectorAll('.reveal');
+  const io = new IntersectionObserver(entries => {
+    entries.forEach(e => { if(e.isIntersecting) e.target.classList.add('visible'); });
+  }, { threshold: 0.12 });
+  reveals.forEach(r => io.observe(r));
+
+  // Menu filter
+  function filterMenu(cat, btn) {
+    document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    document.querySelectorAll('.menu-card').forEach(card => {
+      const cats = card.dataset.cat || '';
+      card.style.display = (cat === 'all' || cats.includes(cat)) ? '' : 'none';
+    });
+  }
+
+  // FAQ toggle
+  function toggleFaq(btn) {
+    const item = btn.closest('.faq-item');
+    const isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
+    if(!isOpen) item.classList.add('open');
+  }
+
+  // Toast
+  function showToast(msg) {
+    const t = document.getElementById('toast');
+    t.textContent = msg;
+    t.classList.add('show');
+    setTimeout(() => t.classList.remove('show'), 3000);
+  }
+
+  function addToOrder(name) {
+    showToast('🎂 ' + name + ' added! Fill the order form below.');
+    document.querySelector('#f-type').value = '';
+    document.getElementById('contact').scrollIntoView({behavior:'smooth'});
+  }
+
+  function submitOrder() {
+    const name = document.getElementById('f-name').value.trim();
+    const contact = document.getElementById('f-contact').value.trim();
+    const type = document.getElementById('f-type').value;
+    if(!name || !contact || !type) {
+      showToast('⚠️ Please fill in name, contact, and cake type.');
+      return;
+    }
+    showToast('🎀 Order sent! We\'ll reach out within 24 hours.');
+    ['f-name','f-contact','f-desc'].forEach(id => document.getElementById(id).value = '');
+    document.getElementById('f-type').value = '';
+    document.getElementById('f-servings').value = '';
+  }
+
+  // Smooth nav
+  document.querySelectorAll('a[href^="#"]').forEach(a => {
+    a.addEventListener('click', e => {
+      const id = a.getAttribute('href').slice(1);
+      const el = document.getElementById(id);
+      if(el) { e.preventDefault(); el.scrollIntoView({behavior:'smooth'}); }
+    });
+  });
+</script>
+</body>
+</html>
