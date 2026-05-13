@@ -580,16 +580,16 @@
     <div class="form-row">
       <div class="form-group">
         <label>Your Name</label>
-        <input type="text" placeholder="Jane Smith" />
+        <input id="from_name" type="text" placeholder="Jane Smith" />
       </div>
       <div class="form-group">
         <label>Email Address</label>
-        <input type="email" placeholder="jane@example.com" />
+        <input id="reply_to" type="email" placeholder="jane@example.com" />
       </div>
     </div>
     <div class="form-group">
       <label>What kind of website do you need?</label>
-      <select>
+      <select id="website_type">
         <option value="">— Select an option —</option>
         <option>Business / Brand website</option>
         <option>E-Commerce store</option>
@@ -601,9 +601,9 @@
     </div>
     <div class="form-group">
       <label>Tell us about your project</label>
-      <textarea placeholder="What does your business do? Any ideas, references, or must-haves?"></textarea>
+      <textarea id="message" placeholder="What does your business do? Any ideas, references, or must-haves?"></textarea>
     </div>
-    <button class="submit-btn">Send Message →</button>
+    <button class="submit-btn" onclick="sendEmail()">Send Message →</button>
   </div>
 </section>
 
@@ -618,7 +618,11 @@
   </nav>
 </footer>
 
+<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
+  // Init EmailJS
+  emailjs.init('amE-7DVSjt7Gu3Uzs');
+
   // Scroll-triggered fade-up
   const obs = new IntersectionObserver((entries) => {
     entries.forEach(e => {
@@ -631,18 +635,54 @@
 
   document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
 
-  // Contact form submit
-  document.querySelector('.submit-btn').addEventListener('click', () => {
+  // Send email via EmailJS
+  function sendEmail() {
     const btn = document.querySelector('.submit-btn');
-    btn.textContent = '✓ Message Sent!';
-    btn.style.background = 'var(--sky)';
-    btn.style.color = '#fff';
-    setTimeout(() => {
-      btn.textContent = 'Send Message →';
-      btn.style.background = '';
-      btn.style.color = '';
-    }, 3000);
-  });
+    const name = document.getElementById('from_name').value.trim();
+    const email = document.getElementById('reply_to').value.trim();
+    const type = document.getElementById('website_type').value;
+    const message = document.getElementById('message').value.trim();
+
+    if (!name || !email || !message) {
+      alert('Please fill in your name, email, and project details.');
+      return;
+    }
+
+    btn.textContent = 'Sending...';
+    btn.disabled = true;
+
+    emailjs.send('service_mz77brb', 'template_ahtcjc7', {
+      from_name: name,
+      reply_to: email,
+      website_type: type || 'Not specified',
+      message: message
+    }).then(() => {
+      btn.textContent = '✓ Message Sent!';
+      btn.style.background = 'var(--sky)';
+      btn.style.color = '#fff';
+      document.getElementById('from_name').value = '';
+      document.getElementById('reply_to').value = '';
+      document.getElementById('website_type').value = '';
+      document.getElementById('message').value = '';
+      setTimeout(() => {
+        btn.textContent = 'Send Message →';
+        btn.style.background = '';
+        btn.style.color = '';
+        btn.disabled = false;
+      }, 3000);
+    }).catch((err) => {
+      console.error('EmailJS error:', err);
+      btn.textContent = 'Failed — Try Again';
+      btn.style.background = '#ff4444';
+      btn.style.color = '#fff';
+      btn.disabled = false;
+      setTimeout(() => {
+        btn.textContent = 'Send Message →';
+        btn.style.background = '';
+        btn.style.color = '';
+      }, 3000);
+    });
+  }
 </script>
 </body>
 </html>
