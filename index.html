@@ -618,11 +618,7 @@
   </nav>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/@emailjs/browser@4/dist/email.min.js"></script>
 <script>
-  // Init EmailJS
-  emailjs.init('amE-7DVSjt7Gu3Uzs');
-
   // Scroll-triggered fade-up
   const obs = new IntersectionObserver((entries) => {
     entries.forEach(e => {
@@ -635,8 +631,8 @@
 
   document.querySelectorAll('.fade-up').forEach(el => obs.observe(el));
 
-  // Send email via EmailJS
-  function sendEmail() {
+  // Send form via Formspree
+  async function sendEmail() {
     const btn = document.querySelector('.submit-btn');
     const name = document.getElementById('from_name').value.trim();
     const email = document.getElementById('reply_to').value.trim();
@@ -651,27 +647,31 @@
     btn.textContent = 'Sending...';
     btn.disabled = true;
 
-    emailjs.send('service_mz77brb', 'template_ahtcjc7', {
-      from_name: name,
-      reply_to: email,
-      website_type: type || 'Not specified',
-      message: message
-    }).then(() => {
-      btn.textContent = '✓ Message Sent!';
-      btn.style.background = 'var(--sky)';
-      btn.style.color = '#fff';
-      document.getElementById('from_name').value = '';
-      document.getElementById('reply_to').value = '';
-      document.getElementById('website_type').value = '';
-      document.getElementById('message').value = '';
-      setTimeout(() => {
-        btn.textContent = 'Send Message →';
-        btn.style.background = '';
-        btn.style.color = '';
-        btn.disabled = false;
-      }, 3000);
-    }).catch((err) => {
-      console.error('EmailJS error:', err);
+    try {
+      const res = await fetch('https://formspree.io/f/mykovjnr', {
+        method: 'POST',
+        headers: { 'Accept': 'application/json', 'Content-Type': 'application/json' },
+        body: JSON.stringify({ name, email, website_type: type || 'Not specified', message })
+      });
+
+      if (res.ok) {
+        btn.textContent = '✓ Message Sent!';
+        btn.style.background = 'var(--sky)';
+        btn.style.color = '#fff';
+        document.getElementById('from_name').value = '';
+        document.getElementById('reply_to').value = '';
+        document.getElementById('website_type').value = '';
+        document.getElementById('message').value = '';
+        setTimeout(() => {
+          btn.textContent = 'Send Message →';
+          btn.style.background = '';
+          btn.style.color = '';
+          btn.disabled = false;
+        }, 3000);
+      } else {
+        throw new Error('Failed');
+      }
+    } catch {
       btn.textContent = 'Failed — Try Again';
       btn.style.background = '#ff4444';
       btn.style.color = '#fff';
@@ -681,7 +681,7 @@
         btn.style.background = '';
         btn.style.color = '';
       }, 3000);
-    });
+    }
   }
 </script>
 </body>
