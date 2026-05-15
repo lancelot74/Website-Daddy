@@ -142,9 +142,11 @@
     .submit-btn:hover { background: var(--electric); color: #fff; }
 
     /* LANG SWITCHER */
-    .lang-switcher { display: flex; gap: .3rem; }
-    .lang-btn { background: transparent; border: 1px solid var(--border); color: var(--muted); padding: .35rem .65rem; border-radius: 6px; font-size: .78rem; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all .2s; }
-    .lang-btn.active, .lang-btn:hover { border-color: var(--lime); color: var(--lime); background: rgba(204,255,0,.08); }
+    .lang-float { position: fixed; bottom: 1.5rem; right: 1.5rem; z-index: 999; display: flex; flex-direction: column; gap: .4rem; align-items: center; }
+    .lang-float-label { font-size: .65rem; letter-spacing: 2px; text-transform: uppercase; color: var(--muted); margin-bottom: .1rem; }
+    .lang-btn { background: var(--card); border: 1px solid var(--border); color: var(--muted); width: 48px; height: 48px; border-radius: 50%; font-size: .8rem; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all .2s; box-shadow: 0 4px 16px rgba(0,0,0,.4); }
+    .lang-btn.active { border-color: var(--lime); color: var(--lime); background: rgba(204,255,0,.12); box-shadow: 0 0 12px rgba(204,255,0,.3); }
+    .lang-btn:hover { border-color: var(--lime); color: var(--lime); transform: scale(1.1); }
 
     /* FOOTER */
     footer { border-top: 1px solid var(--border); padding: 2rem 5%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
@@ -170,14 +172,7 @@
     <li><a href="#team" data-t="nav_pricing">Pricing</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <div style="display:flex;align-items:center;gap:.8rem;">
-    <div class="lang-switcher">
-      <button class="lang-btn active" onclick="setLang('en')">EN</button>
-      <button class="lang-btn" onclick="setLang('mn')">MN</button>
-      <button class="lang-btn" onclick="setLang('hy')">HY</button>
-    </div>
-    <a href="#contact" class="nav-cta" data-t="nav_cta">Get a Website</a>
-  </div>
+  <a href="#contact" class="nav-cta" data-t="nav_cta">Get a Website</a>
 </nav>
 
 <!-- HERO -->
@@ -383,6 +378,14 @@
     }
   }
 </script>
+
+<!-- FLOATING LANG SWITCHER -->
+<div class="lang-float">
+  <span class="lang-float-label">🌐 Lang</span>
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('mn')">MN</button>
+  <button class="lang-btn" onclick="setLang('hy')">HY</button>
+</div>
 
 <script>
 const translations = {
