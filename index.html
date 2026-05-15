@@ -103,6 +103,7 @@
     .wt-cotton { background: linear-gradient(135deg, #f8c8d4, #e8a0b4); color: #3a1a2a; }
     .wt-brook { background: linear-gradient(135deg, #2c1810, #6f3d2a); color: #f5e6d0; }
     .wt-zielo { background: linear-gradient(135deg, #1a3a1a, #2d6a2d); color: #c8f0c8; }
+    .wt-hq { background: linear-gradient(135deg, #1a1a2e, #16213e, #0f3460); color: #e0e0ff; }
     .work-info { padding: 1.3rem 1.5rem; }
     .work-info h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: .3rem; }
     .work-info span { color: var(--muted); font-size: .85rem; }
@@ -140,15 +141,10 @@
     .submit-btn { width: 100%; padding: .95rem; border-radius: 50px; background: var(--lime); color: var(--dark); font-weight: 700; font-size: 1rem; border: none; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: background .2s; margin-top: .5rem; }
     .submit-btn:hover { background: var(--electric); color: #fff; }
 
-    /* INSTAGRAM BUTTON */
-    .ig-btn {
-      display: inline-flex; align-items: center; gap: .5rem;
-      background: linear-gradient(135deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-      color: #fff !important; font-weight: 700; font-size: .9rem;
-      padding: .55rem 1.2rem; border-radius: 50px;
-      text-decoration: none; transition: opacity .2s, transform .2s;
-    }
-    .ig-btn:hover { opacity: .85; transform: translateY(-2px); }
+    /* LANG SWITCHER */
+    .lang-switcher { display: flex; gap: .3rem; }
+    .lang-btn { background: transparent; border: 1px solid var(--border); color: var(--muted); padding: .35rem .65rem; border-radius: 6px; font-size: .78rem; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; transition: all .2s; }
+    .lang-btn.active, .lang-btn:hover { border-color: var(--lime); color: var(--lime); background: rgba(204,255,0,.08); }
 
     /* FOOTER */
     footer { border-top: 1px solid var(--border); padding: 2rem 5%; display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 1rem; }
@@ -169,12 +165,19 @@
 <nav>
   <a href="#" class="logo">Lucky<span>Web</span></a>
   <ul class="nav-links">
-    <li><a href="#services">Services</a></li>
-    <li><a href="#work">Work</a></li>
-    <li><a href="#team">Pricing</a></li>
+    <li><a href="#services" data-t="nav_services">Services</a></li>
+    <li><a href="#work" data-t="nav_work">Work</a></li>
+    <li><a href="#team" data-t="nav_pricing">Pricing</a></li>
     <li><a href="#contact">Contact</a></li>
   </ul>
-  <a href="#contact" class="nav-cta">Get a Website</a>
+  <div style="display:flex;align-items:center;gap:.8rem;">
+    <div class="lang-switcher">
+      <button class="lang-btn active" onclick="setLang('en')">EN</button>
+      <button class="lang-btn" onclick="setLang('mn')">MN</button>
+      <button class="lang-btn" onclick="setLang('hy')">HY</button>
+    </div>
+    <a href="#contact" class="nav-cta" data-t="nav_cta">Get a Website</a>
+  </div>
 </nav>
 
 <!-- HERO -->
@@ -183,39 +186,39 @@
   <h1>WE BUILD<br>WEBSITES THAT<br><span class="accent">WORK.</span></h1>
   <p>LuckyWeb builds fast, clean websites for businesses that want to grow online.</p>
   <div class="hero-actions">
-    <a href="#contact" class="btn-primary">Start a Project</a>
-    <a href="#work" class="btn-ghost">See Our Work</a>
+    <a href="#contact" class="btn-primary" data-t="hero_cta1">Start a Project</a>
+    <a href="#work" class="btn-ghost" data-t="hero_cta2">See Our Work</a>
   </div>
 </section>
 
 <!-- SERVICES -->
 <section id="services">
-  <span class="section-label fade-up">Services</span>
+  <span class="section-label fade-up" data-t="lbl_services">Services</span>
   <h2 class="section-title fade-up">WHAT WE <span class="hl">BUILD</span></h2>
   <div class="services-grid">
     <div class="service-card fade-up">
-      <h3>Custom Web Design</h3>
-      <p>Built from scratch for your brand. No templates.</p>
+      <h3 data-t="svc1_title">Custom Web Design</h3>
+      <p data-t="svc1_desc">Built from scratch for your brand. No templates.</p>
     </div>
     <div class="service-card fade-up">
-      <h3>Development</h3>
-      <p>Fast, clean code that works on every device.</p>
+      <h3 data-t="svc2_title">Development</h3>
+      <p data-t="svc2_desc">Fast, clean code that works on every device.</p>
     </div>
     <div class="service-card fade-up">
-      <h3>E-Commerce</h3>
-      <p>Online stores set up and ready to sell from day one.</p>
+      <h3 data-t="svc3_title">E-Commerce</h3>
+      <p data-t="svc3_desc">Online stores set up and ready to sell from day one.</p>
     </div>
     <div class="service-card fade-up">
-      <h3>Ongoing Support</h3>
-      <p>We stay available after launch for updates and changes.</p>
+      <h3 data-t="svc4_title">Ongoing Support</h3>
+      <p data-t="svc4_desc">We stay available after launch for updates and changes.</p>
     </div>
   </div>
 </section>
 
 <!-- WORK -->
 <section id="work">
-  <span class="section-label fade-up">Our Work</span>
-  <h2 class="section-title fade-up">SITES WE'VE <span class="hl">BUILT</span></h2>
+  <span class="section-label fade-up" data-t="lbl_work">Our Work</span>
+  <h2 class="section-title fade-up">DESIGNS WE'VE <span class="hl">BUILT</span></h2>
   <div class="work-grid">
     <a href="vantage-website.html" class="work-card fade-up">
       <div class="work-thumb wt-vantage">VANTAGE</div>
@@ -273,37 +276,45 @@
         <div class="work-link">View Site →</div>
       </div>
     </a>
+    <a href="hqcoffee.html" class="work-card fade-up">
+      <div class="work-thumb wt-hq">HQ COFFEE</div>
+      <div class="work-info">
+        <h3>HQ Coffee</h3>
+        <span>Business Website</span>
+        <div class="work-link">View Site →</div>
+      </div>
+    </a>
   </div>
 </section>
 
 <!-- PRICING -->
 <section id="team">
-  <span class="section-label fade-up">Pricing</span>
-  <h2 class="section-title fade-up">WEBSITES STARTING<br><span class="hl">FROM 300,000₮</span></h2>
+  <span class="section-label fade-up" data-t="lbl_pricing">Pricing</span>
+  <h2 class="section-title fade-up">WEBSITES STARTING<br><span class="hl">FROM $200</span></h2>
   <div class="price-box fade-up">
-    <p>Every website is custom-built for your business. Get in touch and we'll put together a quote based on what you need.</p>
-    <a href="#contact" class="btn-primary" style="display:inline-block; margin-top:1.5rem;">Get a Quote →</a>
+    <p data-t="pricing_desc">Every website is custom-built for your business. We work fast — most sites are completed in <strong style="color:var(--lime)">as little as 2 days</strong>. Get in touch and we'll put together a quote based on what you need.</p>
+    <a href="#contact" class="btn-primary" style="display:inline-block; margin-top:1.5rem;" data-t="pricing_cta">Get a Quote →</a>
   </div>
 </section>
 
 <!-- CONTACT -->
 <section id="contact">
-  <span class="section-label fade-up" style="text-align:center;display:block;">Contact</span>
+  <span class="section-label fade-up" style="text-align:center;display:block;" data-t="lbl_contact">Contact</span>
   <h2 class="section-title fade-up" style="text-align:center;">LET'S <span class="hl">TALK</span></h2>
   <div class="contact-box fade-up">
-    <p>Tell us about your project and we'll get back to you within 24 hours.</p>
+    <p data-t="contact_desc">Tell us about your project and we'll get back to you within 24 hours.</p>
     <div class="form-row">
       <div class="form-group">
-        <label>Name</label>
+        <label data-t="form_name">Name</label>
         <input id="from_name" type="text" placeholder="Jane Smith" />
       </div>
       <div class="form-group">
-        <label>Email</label>
+        <label data-t="form_email">Email</label>
         <input id="reply_to" type="email" placeholder="jane@example.com" />
       </div>
     </div>
     <div class="form-group">
-      <label>What do you need?</label>
+      <label data-t="form_type">What do you need?</label>
       <select id="website_type">
         <option value="">— Select —</option>
         <option>Business / Brand website</option>
@@ -314,22 +325,21 @@
       </select>
     </div>
     <div class="form-group">
-      <label>Project details</label>
-      <textarea id="message" placeholder="Tell us about your business and what you're looking for."></textarea>
+      <label data-t="form_details">Project details</label>
+      <textarea id="message" data-t="form_placeholder" placeholder="Tell us about your business and what you're looking for."></textarea>
     </div>
-    <button class="submit-btn" onclick="sendEmail()">Send Message →</button>
+    <button class="submit-btn" onclick="sendEmail()" data-t="form_submit">Send Message →</button>
   </div>
 </section>
 
 <!-- FOOTER -->
 <footer>
   <a href="#" class="logo">Lucky<span>Web</span></a>
-  <p>© 2025 LuckyWeb. All rights reserved.</p>
+  <p data-t="footer_copy">© 2025 LuckyWeb. All rights reserved.</p>
   <nav class="ft-links">
-    <a href="#services">Services</a>
-    <a href="#work">Work</a>
+    <a href="#services" data-t="nav_services">Services</a>
+    <a href="#work" data-t="nav_work">Work</a>
     <a href="#contact">Contact</a>
-    <a href="https://www.instagram.com/luckyweb.sites/" target="_blank" class="ig-btn">📸 Instagram</a>
   </nav>
 </footer>
 
@@ -372,6 +382,95 @@
       setTimeout(() => { btn.textContent = 'Send Message →'; btn.style.background = ''; btn.style.color = ''; }, 3000);
     }
   }
+</script>
+
+<script>
+const translations = {
+  en: {
+    nav_services: "Services", nav_work: "Work", nav_pricing: "Pricing",
+    nav_contact: "Contact", nav_cta: "Get a Website",
+    hero_sub: "LuckyWeb builds fast, clean websites for businesses that want to grow online.",
+    hero_cta1: "Start a Project", hero_cta2: "See Our Work",
+    lbl_services: "Services", lbl_work: "Our Work", lbl_pricing: "Pricing", lbl_contact: "Contact",
+    title_services: "WHAT WE", hl_services: "BUILD",
+    title_work: "DESIGNS WE&#39;VE", hl_work: "BUILT",
+    title_pricing: "WEBSITES STARTING", hl_pricing: "FROM $200",
+    title_contact: "LET&#39;S", hl_contact: "TALK",
+    svc1_title: "Custom Web Design", svc1_desc: "Built from scratch for your brand. No templates.",
+    svc2_title: "Development", svc2_desc: "Fast, clean code that works on every device.",
+    svc3_title: "E-Commerce", svc3_desc: "Online stores set up and ready to sell from day one.",
+    svc4_title: "Ongoing Support", svc4_desc: "We stay available after launch for updates and changes.",
+    pricing_desc: "Every website is custom-built for your business. We work fast — most sites are completed in <strong style=\"color:var(--lime)\">as little as 2 days</strong>. Get in touch and we\'ll put together a quote based on what you need.",
+    pricing_cta: "Get a Quote →",
+    contact_desc: "Tell us about your project and we\'ll get back to you within 24 hours.",
+    form_name: "Name", form_email: "Email", form_type: "What do you need?",
+    form_details: "Project details",
+    form_placeholder: "Tell us about your business and what you\'re looking for.",
+    form_submit: "Send Message →",
+    footer_copy: "© 2025 LuckyWeb. All rights reserved."
+  },
+  mn: {
+    nav_services: "Үйлчилгээ", nav_work: "Бүтээлүүд", nav_pricing: "Үнэ",
+    nav_contact: "Холбоо барих", nav_cta: "Вэбсайт авах",
+    hero_sub: "LuckyWeb нь онлайн өсөхийг хүсэн буй бизнесүүдэд хурдан, цэвэр вэбсайт бүтээдэг.",
+    hero_cta1: "Төсөл эхлүүлэх", hero_cta2: "Бүтээлүүд үзэх",
+    lbl_services: "Үйлчилгээ", lbl_work: "Манай бүтээлүүд", lbl_pricing: "Үнэ", lbl_contact: "Холбоо барих",
+    title_services: "БИДНИЙ", hl_services: "ҮЙЛЧИЛГЭЭ",
+    title_work: "БИДНИЙ ХИЙСЭН", hl_work: "ДИЗАЙНУУД",
+    title_pricing: "ВЭБСАЙТ", hl_pricing: "$200-ААС ЭХЭЛНЭ",
+    title_contact: "ХОЛБОГДОЁ", hl_contact: "ЯРИ",
+    svc1_title: "Захиалгат вэб дизайн", svc1_desc: "Таны брэндэд зориулж эхнээс нь бүтээнэ. Загвар хэрэглэхгүй.",
+    svc2_title: "Хөгжүүлэлт", svc2_desc: "Бүх төхөөрөмж дээр ажилладаг хурдан, цэвэр код.",
+    svc3_title: "Онлайн дэлгүүр", svc3_desc: "Нэгдүгээр өдрөөс эхлэн борлуулахад бэлэн онлайн дэлгүүр.",
+    svc4_title: "Тасралтгүй дэмжлэг", svc4_desc: "Ажиллуулсны дараа шинэчлэлт, өөрчлөлтөд бэлэн байна.",
+    pricing_desc: "Бүх вэбсайт таны бизнест зориулан захиалгаар бүтээгдэнэ. Бид хурдан ажилладаг — ихэнх сайтыг <strong style=\"color:var(--lime)\">2 хоногийн дотор</strong> дуусгадаг. Холбоо барьж, хэрэгцээнд тохирсон үнийн санал авна уу.",
+    pricing_cta: "Үнийн санал авах →",
+    contact_desc: "Төслийнхөө талаар хэлэгтүн, 24 цагийн дотор хариу өгнө.",
+    form_name: "Нэр", form_email: "Имэйл", form_type: "Юу хэрэгтэй вэ?",
+    form_details: "Төслийн дэлгэрэнгүй",
+    form_placeholder: "Бизнесийнхээ талаар болон хэрэгцээгээ бидэнд хэлнэ үү.",
+    form_submit: "Мессеж илгээх →",
+    footer_copy: "© 2025 LuckyWeb. Бүх эрх хуулиар хамгаалагдсан."
+  },
+  hy: {
+    nav_services: "Ծառայություններ", nav_work: "Աշխատանք", nav_pricing: "Գին",
+    nav_contact: "Կապ", nav_cta: "Ստանալ կայք",
+    hero_sub: "LuckyWeb-ը կառուցում է արագ, մաքուր կայքեր՝ առցանց աճ ցանկացող բիզնեսների համար։",
+    hero_cta1: "Սկսել նախագիծ", hero_cta2: "Տեսնել մեր աշխատանքը",
+    lbl_services: "Ծառայություններ", lbl_work: "Մեր աշխատանքը", lbl_pricing: "Գնագոյացում", lbl_contact: "Կապ",
+    title_services: "ԻՆՉ ԵՆՔ", hl_services: "ԿԱՌՈՒՑՈՒՄ",
+    title_work: "ՄԵՐ ԿԱՏԱՐԱԾ", hl_work: "ԴԻԶԱՅՆՆԵՐԸ",
+    title_pricing: "ԿԱՅՔԵՐ ՍԿՍԱԾ", hl_pricing: "$200-ԻՑ",
+    title_contact: "ԵԿԵՔ", hl_contact: "ԽՈՍԵՆՔ",
+    svc1_title: "Պատվիրյալ վեբ դիզայն", svc1_desc: "Կառուցված ձեր բրենդի համար: Առանց կաղապարի:",
+    svc2_title: "Մշակում", svc2_desc: "Արագ, մաքուր կոդ, որն աշխատում է յուրաքանչյուր սարքում:",
+    svc3_title: "Էլ-առևտուր", svc3_desc: "Օնլայն խանութ, պատրաստ վաճառելու առաջին օրից:",
+    svc4_title: "Շարունակական աջակցություն", svc4_desc: "Մենք հասանելի ենք թողարկումից հետո թարմացումների համար:",
+    pricing_desc: "Յուրաքանչյուր կայք կառուցվում է ձեր բիզնեսի համար: Մենք արագ ենք աշխատում — շատ կայքեր ավարտվում են <strong style=\"color:var(--lime)\">ընդամենը 2 օրում</strong>: Կապ հաստատեք, և մենք կազմենք հաշվարկ:",
+    pricing_cta: "Ստանալ հաշվարկ →",
+    contact_desc: "Պատմեք ձեր նախագծի մասին, և մենք կպատասխանենք 24 ժամվա ընթացքում:",
+    form_name: "Անուն", form_email: "Էլ. փոստ", form_type: "Ի՞նչ է ձեզ հարկավոր:",
+    form_details: "Նախագծի մանրամասներ",
+    form_placeholder: "Պատմեք ձեր բիզնեսի և ձեր ակնկալիքների մասին:",
+    form_submit: "Ուղարկել հաղորդագրություն →",
+    footer_copy: "© 2025 LuckyWeb. Բոլոր իրավունքները պաշտպանված են:"
+  }
+};
+
+function setLang(lang) {
+  const t = translations[lang];
+  document.querySelectorAll('[data-t]').forEach(el => {
+    const key = el.getAttribute('data-t');
+    if (!t[key]) return;
+    if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') {
+      el.placeholder = t[key];
+    } else {
+      el.innerHTML = t[key];
+    }
+  });
+  document.querySelectorAll('.lang-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector(`.lang-btn[onclick="setLang('${lang}')"]`).classList.add('active');
+}
 </script>
 </body>
 </html>
