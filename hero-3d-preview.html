@@ -1,0 +1,363 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>LuckyWeb — Hero 3D Preview</title>
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+  <style>
+    :root {
+      --electric: #FF3BFF;
+      --lime: #CCFF00;
+      --sky: #00CFFF;
+      --dark: #0A0A0F;
+      --card: #13131C;
+      --border: #2A2A3A;
+      --text: #F0F0FF;
+      --muted: #8888AA;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--dark); color: var(--text); font-family: 'DM Sans', sans-serif; overflow: hidden; }
+
+    .hero {
+      min-height: 100vh;
+      display: flex; flex-direction: column; justify-content: center;
+      padding: 10rem 5% 6rem;
+      position: relative; overflow: hidden;
+    }
+    .hero-bg {
+      position: absolute; inset: 0; z-index: 0;
+      background:
+        radial-gradient(ellipse 60% 50% at 80% 30%, rgba(255,59,255,.15) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 40% at 10% 80%, rgba(0,207,255,.12) 0%, transparent 70%);
+    }
+    #hero-3d {
+      position: absolute; inset: 0; z-index: 0;
+      cursor: grab; touch-action: pan-y;
+    }
+    #hero-3d:active { cursor: grabbing; }
+
+    .hero h1 {
+      font-family: 'Bebas Neue', sans-serif;
+      font-size: clamp(4rem, 10vw, 9rem);
+      line-height: .95; letter-spacing: 2px;
+      position: relative; z-index: 2; pointer-events: none;
+    }
+    .hero h1 .accent { color: var(--lime); }
+    .hero p {
+      max-width: 480px; margin-top: 1.5rem;
+      font-size: 1.1rem; line-height: 1.6; color: var(--muted);
+      position: relative; z-index: 2; pointer-events: none;
+    }
+    .hero-actions { margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap; position: relative; z-index: 2; pointer-events: none; }
+    .hero-actions > * { pointer-events: auto; }
+    .btn-primary { background: var(--lime); color: var(--dark); padding: .85rem 1.8rem; border-radius: 50px; font-weight: 700; text-decoration: none; }
+    .btn-ghost { border: 1px solid var(--border); color: var(--text); padding: .85rem 1.8rem; border-radius: 50px; font-weight: 500; text-decoration: none; }
+
+    /* CONTROL PANEL */
+    .panel {
+      position: fixed; top: 1.5rem; right: 1.5rem; z-index: 50;
+      background: rgba(19,19,28,.9); backdrop-filter: blur(10px);
+      border: 1px solid var(--border); border-radius: 14px;
+      padding: 1.1rem 1.2rem; width: 260px;
+      font-size: .85rem;
+    }
+    .panel h4 { font-family: 'Bebas Neue', sans-serif; letter-spacing: 2px; color: var(--lime); margin-bottom: .8rem; font-size: 1rem; }
+    .panel .row { margin-bottom: .9rem; }
+    .panel label { display: block; font-size: .72rem; letter-spacing: 1.5px; text-transform: uppercase; color: var(--muted); margin-bottom: .4rem; }
+    .panel .chips { display: flex; flex-wrap: wrap; gap: .35rem; }
+    .panel .chip {
+      background: transparent; border: 1px solid var(--border); color: var(--text);
+      padding: .35rem .65rem; border-radius: 50px; font-size: .75rem;
+      font-family: 'DM Sans', sans-serif; cursor: pointer; transition: all .15s;
+    }
+    .panel .chip:hover { border-color: var(--sky); }
+    .panel .chip.active { background: var(--lime); color: var(--dark); border-color: var(--lime); font-weight: 700; }
+    .panel input[type=range] { width: 100%; accent-color: var(--lime); }
+    .panel .val { color: var(--lime); font-weight: 700; font-size: .75rem; float: right; }
+    .panel button.full { width: 100%; background: var(--electric); color: #fff; border: none; padding: .55rem; border-radius: 50px; font-weight: 700; cursor: pointer; font-family: 'DM Sans', sans-serif; }
+    .panel .hint { color: var(--muted); font-size: .72rem; line-height: 1.4; margin-top: .8rem; }
+
+    @media (max-width: 700px) {
+      .panel { right: 1rem; left: 1rem; top: auto; bottom: 1rem; width: auto; }
+    }
+  </style>
+</head>
+<body>
+
+<section class="hero">
+  <div class="hero-bg"></div>
+  <canvas id="hero-3d"></canvas>
+  <h1>WE BUILD<br>WEBSITES THAT<br><span class="accent">WORK.</span></h1>
+  <p>LuckyWeb builds fast, clean websites for businesses that want to grow online.</p>
+  <div class="hero-actions">
+    <a href="#" class="btn-primary">Start a Project</a>
+    <a href="#" class="btn-ghost">See Our Work</a>
+  </div>
+</section>
+
+<!-- DESIGN CONTROLS -->
+<div class="panel">
+  <h4>3D Hero — Design</h4>
+
+  <div class="row">
+    <label>Shape Preset</label>
+    <div class="chips" id="shape-chips">
+      <button class="chip active" data-shape="trio">Trio</button>
+      <button class="chip" data-shape="torus">Torus Knot</button>
+      <button class="chip" data-shape="ico">Icosahedron</button>
+      <button class="chip" data-shape="octa">Octa+Ring</button>
+      <button class="chip" data-shape="dual">Dual Ico</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <label>Color Scheme</label>
+    <div class="chips" id="color-chips">
+      <button class="chip active" data-color="neon3">Neon Trio</button>
+      <button class="chip" data-color="lime">Lime</button>
+      <button class="chip" data-color="pink">Pink</button>
+      <button class="chip" data-color="sky">Sky</button>
+      <button class="chip" data-color="duo">Pink/Lime</button>
+    </div>
+  </div>
+
+  <div class="row">
+    <label>Speed <span class="val" id="speed-val">1.0×</span></label>
+    <input type="range" id="speed" min="0" max="3" step="0.05" value="1" />
+  </div>
+
+  <div class="row">
+    <label>Size <span class="val" id="size-val">1.0×</span></label>
+    <input type="range" id="size" min="0.4" max="2" step="0.05" value="1" />
+  </div>
+
+  <div class="row">
+    <label>Line Glow <span class="val" id="glow-val">1.0×</span></label>
+    <input type="range" id="glow" min="0.3" max="2" step="0.05" value="1" />
+  </div>
+
+  <div class="row">
+    <button class="full" id="reset">Reset Rotation</button>
+  </div>
+
+  <div class="hint">Drag the scene to rotate. Move mouse for parallax. Tweak presets above and tell me what works.</div>
+</div>
+
+<script type="importmap">
+{ "imports": { "three": "https://cdn.jsdelivr.net/npm/three@0.160.0/build/three.module.js" } }
+</script>
+<script type="module">
+  import * as THREE from 'three';
+
+  const COLORS = {
+    electric: 0xFF3BFF,
+    lime: 0xCCFF00,
+    sky: 0x00CFFF,
+  };
+
+  const canvas = document.getElementById('hero-3d');
+  const hero = canvas.parentElement;
+
+  const renderer = new THREE.WebGLRenderer({ canvas, antialias: true, alpha: true });
+  renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+  renderer.setClearColor(0x000000, 0);
+
+  const scene = new THREE.Scene();
+  const camera = new THREE.PerspectiveCamera(50, 1, 0.1, 100);
+  camera.position.z = 5.4;
+
+  const group = new THREE.Group();
+  scene.add(group);
+
+  // state
+  const state = {
+    shape: 'trio',
+    color: 'neon3',
+    speed: 1,
+    size: 1,
+    glow: 1,
+  };
+
+  let meshes = [];
+
+  function wire(geom, color, opacity) {
+    const edges = new THREE.EdgesGeometry(geom);
+    const mat = new THREE.LineBasicMaterial({
+      color, transparent: true, opacity,
+      blending: THREE.AdditiveBlending, depthWrite: false
+    });
+    const m = new THREE.LineSegments(edges, mat);
+    m.userData.baseOpacity = opacity;
+    return m;
+  }
+
+  function pickColors(scheme) {
+    switch (scheme) {
+      case 'lime':  return [COLORS.lime, COLORS.lime, COLORS.lime];
+      case 'pink':  return [COLORS.electric, COLORS.electric, COLORS.electric];
+      case 'sky':   return [COLORS.sky, COLORS.sky, COLORS.sky];
+      case 'duo':   return [COLORS.electric, COLORS.lime, COLORS.electric];
+      case 'neon3':
+      default:      return [COLORS.electric, COLORS.lime, COLORS.sky];
+    }
+  }
+
+  function buildScene() {
+    // dispose old
+    meshes.forEach(m => {
+      group.remove(m);
+      m.geometry.dispose();
+      m.material.dispose();
+    });
+    meshes = [];
+
+    const [c1, c2, c3] = pickColors(state.color);
+    const s = state.size;
+
+    if (state.shape === 'trio') {
+      const a = wire(new THREE.IcosahedronGeometry(2.1 * s, 0), c1, 0.55);
+      const b = wire(new THREE.IcosahedronGeometry(1.55 * s, 1), c2, 0.9);
+      const c = wire(new THREE.TorusKnotGeometry(1.0 * s, 0.3 * s, 80, 8), c3, 0.7);
+      a.userData.spin = { x: 0,     y: 0,     z: 0 };
+      b.userData.spin = { x: 0.003, y: 0.006, z: 0 };
+      c.userData.spin = { x: -0.004, y: 0,    z: 0.0025 };
+      meshes.push(a, b, c);
+    } else if (state.shape === 'torus') {
+      const a = wire(new THREE.TorusKnotGeometry(1.3 * s, 0.42 * s, 140, 12), c1, 0.85);
+      a.userData.spin = { x: -0.003, y: 0.002, z: 0.001 };
+      meshes.push(a);
+    } else if (state.shape === 'ico') {
+      const a = wire(new THREE.IcosahedronGeometry(1.9 * s, 1), c2, 0.95);
+      a.userData.spin = { x: 0.002, y: 0.004, z: 0 };
+      meshes.push(a);
+    } else if (state.shape === 'octa') {
+      const a = wire(new THREE.OctahedronGeometry(1.7 * s, 0), c1, 0.85);
+      const b = wire(new THREE.TorusGeometry(2.4 * s, 0.04 * s, 8, 80), c3, 0.6);
+      const ring2 = wire(new THREE.TorusGeometry(2.6 * s, 0.04 * s, 8, 80), c2, 0.5);
+      ring2.rotation.x = Math.PI / 2.5;
+      a.userData.spin = { x: 0.003, y: 0.005, z: 0 };
+      b.userData.spin = { x: 0.001, y: 0, z: 0.002 };
+      ring2.userData.spin = { x: 0, y: 0.003, z: 0.001 };
+      meshes.push(a, b, ring2);
+    } else if (state.shape === 'dual') {
+      const a = wire(new THREE.IcosahedronGeometry(2.0 * s, 0), c1, 0.6);
+      const b = wire(new THREE.IcosahedronGeometry(1.3 * s, 2), c2, 0.95);
+      a.userData.spin = { x: -0.002, y: -0.003, z: 0 };
+      b.userData.spin = { x: 0.005, y: 0.007, z: 0.001 };
+      meshes.push(a, b);
+    }
+
+    applyGlow();
+    meshes.forEach(m => group.add(m));
+  }
+
+  function applyGlow() {
+    meshes.forEach(m => {
+      m.material.opacity = Math.min(1, m.userData.baseOpacity * state.glow);
+    });
+  }
+
+  function resize() {
+    const w = hero.clientWidth;
+    const h = hero.clientHeight;
+    renderer.setSize(w, h, false);
+    camera.aspect = w / h;
+    camera.updateProjectionMatrix();
+  }
+  resize();
+  window.addEventListener('resize', resize);
+
+  let isDragging = false, lastX = 0, lastY = 0;
+  let rotVelX = 0.0025, rotVelY = 0.004;
+  let mx = 0, my = 0;
+
+  canvas.addEventListener('pointerdown', (e) => {
+    if (e.pointerType === 'touch') return;
+    isDragging = true; lastX = e.clientX; lastY = e.clientY;
+    canvas.setPointerCapture(e.pointerId);
+  });
+  canvas.addEventListener('pointerup', (e) => {
+    isDragging = false;
+    try { canvas.releasePointerCapture(e.pointerId); } catch (_) {}
+  });
+  canvas.addEventListener('pointermove', (e) => {
+    if (isDragging) {
+      const dx = e.clientX - lastX;
+      const dy = e.clientY - lastY;
+      lastX = e.clientX; lastY = e.clientY;
+      group.rotation.y += dx * 0.006;
+      group.rotation.x += dy * 0.006;
+      rotVelX = dy * 0.0009;
+      rotVelY = dx * 0.0009;
+    }
+  });
+  window.addEventListener('mousemove', (e) => {
+    const r = hero.getBoundingClientRect();
+    mx = ((e.clientX - r.left) / r.width) * 2 - 1;
+    my = -((e.clientY - r.top) / r.height) * 2 + 1;
+  });
+
+  function animate() {
+    const sp = state.speed;
+    if (!isDragging) {
+      group.rotation.x += rotVelX * sp;
+      group.rotation.y += rotVelY * sp;
+      rotVelX += (0.0025 - rotVelX) * 0.02;
+      rotVelY += (0.004 - rotVelY) * 0.02;
+    }
+    meshes.forEach(m => {
+      const s = m.userData.spin;
+      m.rotation.x += s.x * sp;
+      m.rotation.y += s.y * sp;
+      m.rotation.z += s.z * sp;
+    });
+    camera.position.x += (mx * 0.5 - camera.position.x) * 0.05;
+    camera.position.y += (my * 0.35 - camera.position.y) * 0.05;
+    camera.lookAt(0, 0, 0);
+    renderer.render(scene, camera);
+    requestAnimationFrame(animate);
+  }
+
+  // wire up controls
+  document.querySelectorAll('#shape-chips .chip').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#shape-chips .chip').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.shape = btn.dataset.shape;
+      buildScene();
+    });
+  });
+  document.querySelectorAll('#color-chips .chip').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#color-chips .chip').forEach(b => b.classList.remove('active'));
+      btn.classList.add('active');
+      state.color = btn.dataset.color;
+      buildScene();
+    });
+  });
+  document.getElementById('speed').addEventListener('input', (e) => {
+    state.speed = parseFloat(e.target.value);
+    document.getElementById('speed-val').textContent = state.speed.toFixed(2) + '×';
+  });
+  document.getElementById('size').addEventListener('input', (e) => {
+    state.size = parseFloat(e.target.value);
+    document.getElementById('size-val').textContent = state.size.toFixed(2) + '×';
+    buildScene();
+  });
+  document.getElementById('glow').addEventListener('input', (e) => {
+    state.glow = parseFloat(e.target.value);
+    document.getElementById('glow-val').textContent = state.glow.toFixed(2) + '×';
+    applyGlow();
+  });
+  document.getElementById('reset').addEventListener('click', () => {
+    group.rotation.set(0, 0, 0);
+    rotVelX = 0.0025; rotVelY = 0.004;
+  });
+
+  buildScene();
+  animate();
+</script>
+
+</body>
+</html>
