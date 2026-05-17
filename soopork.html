@@ -1,0 +1,1328 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8"/>
+<meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+<title>SooPork 고기구이 — Korean Barbeque Restaurant · Ulaanbaatar</title>
+<meta name="description" content="SooPork — Premium Korean BBQ in Ulaanbaatar. Three locations: Park Od Mall, Sumber Tower (Khan-Uul), and Yaarmag Cedar City. Sizzling grills, signature shake cocktails, lounge vibes."/>
+<link rel="preconnect" href="https://fonts.googleapis.com"/>
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+<link href="https://fonts.googleapis.com/css2?family=Black+Han+Sans&family=Noto+Sans+KR:wght@300;400;700;900&family=Bebas+Neue&family=Inter:wght@300;400;500;600;700;800&family=Permanent+Marker&display=swap" rel="stylesheet"/>
+<style>
+:root{
+  --bg:#0a0a0a;
+  --bg-2:#141414;
+  --panel:#161616;
+  --line:rgba(255,255,255,.08);
+  --green:#2EE85C;        /* SOO brand green */
+  --green-deep:#1FB845;
+  --red:#E63946;          /* 고기구이 red */
+  --red-deep:#B82C39;
+  --gold:#F4C95D;
+  --ember:#FF6B2B;
+  --cream:#F6F1E6;
+  --text:#EFEFEF;
+  --muted:#9A9A9A;
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:var(--bg);
+  color:var(--text);
+  font-family:'Inter',sans-serif;
+  font-weight:400;
+  overflow-x:hidden;
+  -webkit-font-smoothing:antialiased;
+}
+::selection{background:var(--green);color:#000;}
+::-webkit-scrollbar{width:8px;}
+::-webkit-scrollbar-track{background:#0a0a0a;}
+::-webkit-scrollbar-thumb{background:var(--green-deep);border-radius:4px;}
+
+/* === NOISE OVERLAY === */
+body::before{
+  content:'';position:fixed;inset:0;pointer-events:none;z-index:1;opacity:.04;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' /%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' /%3E%3C/svg%3E");
+}
+
+/* === DANCHEONG STRIPE — Korean traditional 5-color palette === */
+.dancheong{
+  height:6px;width:100%;display:flex;position:relative;z-index:3;
+}
+.dancheong span{flex:1;}
+.dancheong span:nth-child(1){background:#C92027;}  /* 적 red */
+.dancheong span:nth-child(2){background:#1F3F7A;}  /* 청 blue */
+.dancheong span:nth-child(3){background:#F4C95D;}  /* 황 yellow */
+.dancheong span:nth-child(4){background:#0E0E0E;}  /* 흑 black */
+.dancheong span:nth-child(5){background:#F6F1E6;}  /* 백 white */
+
+/* === FLOATING CHERRY BLOSSOM PETALS === */
+.petals{position:fixed;inset:0;pointer-events:none;z-index:50;overflow:hidden;}
+.petal{
+  position:absolute;top:-30px;
+  width:14px;height:14px;
+  background:radial-gradient(ellipse at 30% 30%,#FFE6EE 0%,#FFB7C8 55%,#F38AAB 100%);
+  border-radius:75% 25% 80% 20% / 25% 75% 25% 75%;
+  opacity:0;
+  animation:petalFall linear infinite;
+  filter:drop-shadow(0 0 4px rgba(255,180,200,.4));
+}
+@keyframes petalFall{
+  0%{transform:translate(0,0) rotate(0deg);opacity:0;}
+  10%{opacity:.9;}
+  100%{transform:translate(40vw,105vh) rotate(720deg);opacity:0;}
+}
+.petal:nth-child(1){left:5%;animation-duration:14s;animation-delay:0s;width:12px;height:12px;}
+.petal:nth-child(2){left:18%;animation-duration:18s;animation-delay:2s;width:16px;height:16px;}
+.petal:nth-child(3){left:32%;animation-duration:16s;animation-delay:4s;width:10px;height:10px;}
+.petal:nth-child(4){left:48%;animation-duration:20s;animation-delay:1s;width:14px;height:14px;}
+.petal:nth-child(5){left:65%;animation-duration:15s;animation-delay:6s;width:12px;height:12px;}
+.petal:nth-child(6){left:78%;animation-duration:17s;animation-delay:3s;width:18px;height:18px;}
+.petal:nth-child(7){left:88%;animation-duration:19s;animation-delay:5s;width:11px;height:11px;}
+.petal:nth-child(8){left:25%;animation-duration:22s;animation-delay:8s;width:15px;height:15px;}
+
+/* === KOREAN PAPER LANTERN === */
+.lantern{
+  position:absolute;top:0;width:60px;z-index:6;
+  pointer-events:none;
+}
+.lantern .line{
+  width:1px;height:90px;background:linear-gradient(180deg,transparent,#3a3a3a);
+  margin:0 auto;
+}
+.lantern .ball{
+  width:54px;height:64px;
+  background:radial-gradient(ellipse at 35% 30%,#FFB39A,#E63946 55%,#8A1A22 100%);
+  border-radius:50% 50% 45% 45% / 60% 60% 40% 40%;
+  position:relative;margin:0 auto;
+  box-shadow:0 0 30px rgba(230,57,70,.55),inset -8px -10px 20px rgba(0,0,0,.35);
+  animation:lanternSway 4s ease-in-out infinite;transform-origin:top center;
+}
+.lantern .ball::before,.lantern .ball::after{
+  content:'';position:absolute;left:50%;transform:translateX(-50%);
+  width:30px;height:6px;background:#1A0A0A;
+}
+.lantern .ball::before{top:-3px;border-radius:4px;}
+.lantern .ball::after{bottom:-3px;border-radius:4px;}
+.lantern .tassel{
+  width:2px;height:18px;background:#F4C95D;margin:2px auto 0;
+}
+.lantern.l1{left:6%;animation-delay:0s;}
+.lantern.l2{right:8%;animation-delay:1.2s;}
+.lantern.l2 .ball{animation-delay:-1.5s;}
+@keyframes lanternSway{
+  0%,100%{transform:rotate(-3deg);}
+  50%{transform:rotate(3deg);}
+}
+
+/* === KOREAN SEAL / DOJANG === */
+.dojang{
+  display:inline-flex;align-items:center;justify-content:center;
+  width:64px;height:64px;
+  background:#C92027;color:#F6F1E6;
+  font-family:'Noto Sans KR';font-weight:900;font-size:1.2rem;
+  letter-spacing:.04em;line-height:1;
+  border:3px solid #C92027;
+  position:relative;
+  transform:rotate(-6deg);
+  box-shadow:0 4px 0 rgba(0,0,0,.2);
+}
+.dojang::before{
+  content:'';position:absolute;inset:4px;border:1px solid rgba(246,241,230,.4);
+}
+
+/* === TAEGEUK ROTATING DISC === */
+.taegeuk{
+  width:120px;height:120px;border-radius:50%;
+  background:
+    radial-gradient(circle at 50% 25%,#1F3F7A 0%,#1F3F7A 50%,transparent 50%),
+    radial-gradient(circle at 50% 75%,#C92027 0%,#C92027 50%,transparent 50%),
+    conic-gradient(from 0deg,#C92027 0deg 180deg,#1F3F7A 180deg 360deg);
+  position:relative;
+  animation:spinSlow 20s linear infinite;
+  filter:drop-shadow(0 8px 20px rgba(0,0,0,.4));
+}
+@keyframes spinSlow{to{transform:rotate(360deg);}}
+
+/* === HANOK SCENE (used in Tradition section) === */
+.hanok-scene{
+  position:relative;width:100%;aspect-ratio:5/4;
+  background:linear-gradient(180deg,#F6F1E6 0%,#EBE2CB 100%);
+  overflow:hidden;
+  border:1px solid rgba(0,0,0,.06);
+  background-image:
+    url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='p'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.8' numOctaves='2'/%3E%3CfeColorMatrix values='0 0 0 0 0.5 0 0 0 0 0.4 0 0 0 0 0.3 0 0 0 0.08 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23p)' /%3E%3C/svg%3E"),
+    linear-gradient(180deg,#F6F1E6 0%,#EBE2CB 100%);
+}
+.hanok-scene svg{position:absolute;inset:0;width:100%;height:100%;}
+.hanok-scene .sun{
+  position:absolute;top:14%;left:50%;transform:translateX(-50%);
+  width:90px;height:90px;border-radius:50%;
+  background:radial-gradient(circle,#FFD8B5 0%,#F4A582 70%,#E07A4F 100%);
+  filter:blur(.5px);
+  box-shadow:0 0 60px rgba(244,165,130,.5);
+}
+
+/* === MOUNTAIN SILHOUETTE STRIP === */
+.mountain-strip{
+  position:relative;height:120px;width:100%;
+  background:linear-gradient(180deg,transparent,#070707);
+  margin-top:-120px;z-index:3;pointer-events:none;
+}
+.mountain-strip svg{position:absolute;bottom:0;width:100%;height:100%;display:block;}
+
+/* === KOREAN PATTERN BORDER (cloud / saekdong style) === */
+.kpattern{
+  height:30px;background:
+    repeating-linear-gradient(90deg,
+      #C92027 0 24px, #F4C95D 24px 48px, #1F3F7A 48px 72px, #2EE85C 72px 96px, #F6F1E6 96px 120px);
+  position:relative;z-index:3;
+  opacity:.9;
+  mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 30'%3E%3Cpath d='M0 30 L0 12 Q15 0 30 12 Q45 24 60 12 L60 30 Z' fill='black'/%3E%3C/svg%3E");
+  -webkit-mask-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 60 30'%3E%3Cpath d='M0 30 L0 12 Q15 0 30 12 Q45 24 60 12 L60 30 Z' fill='black'/%3E%3C/svg%3E");
+  mask-repeat:repeat-x;-webkit-mask-repeat:repeat-x;
+  mask-size:60px 30px;-webkit-mask-size:60px 30px;
+}
+
+/* === NAV === */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:200;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 5vw;
+  background:rgba(10,10,10,.55);
+  backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
+  border-bottom:1px solid var(--line);
+  transition:padding .3s ease, background .3s ease;
+}
+nav.solid{padding:12px 5vw;background:rgba(10,10,10,.85);}
+.brand{display:flex;align-items:center;gap:10px;text-decoration:none;}
+.brand-logo{
+  font-family:'Permanent Marker',cursive;
+  font-size:1.7rem;color:var(--green);
+  text-shadow:0 0 14px rgba(46,232,92,.45);
+  letter-spacing:-1px;line-height:1;
+}
+.brand-logo .pork{font-family:'Black Han Sans',sans-serif;color:#fff;text-shadow:none;letter-spacing:1px;}
+.brand-sub{font-family:'Noto Sans KR';font-weight:900;font-size:.65rem;color:var(--red);letter-spacing:.18em;line-height:1;margin-top:4px;}
+.nav-links{display:flex;gap:32px;list-style:none;}
+.nav-links a{
+  text-decoration:none;color:var(--text);
+  font-size:.72rem;font-weight:500;letter-spacing:.22em;text-transform:uppercase;
+  position:relative;transition:color .25s;
+}
+.nav-links a:hover{color:var(--green);}
+.nav-links a::after{
+  content:'';position:absolute;left:0;bottom:-6px;height:1px;width:0;
+  background:var(--green);transition:width .3s;
+}
+.nav-links a:hover::after{width:100%;}
+.nav-cta{
+  font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;
+  text-decoration:none;padding:11px 22px;
+  background:var(--red);color:#fff;
+  border:1px solid var(--red);
+  transition:all .25s;clip-path:polygon(8px 0,100% 0,calc(100% - 8px) 100%,0 100%);
+}
+.nav-cta:hover{background:#fff;color:var(--red);}
+.hamburger{display:none;flex-direction:column;gap:5px;background:none;border:none;cursor:pointer;}
+.hamburger span{display:block;width:24px;height:2px;background:var(--text);}
+
+/* === HERO === */
+#hero{
+  min-height:100svh;position:relative;overflow:hidden;
+  display:grid;grid-template-columns:1.15fr 1fr;
+  padding-top:80px;
+  background:radial-gradient(ellipse at 70% 40%,rgba(255,107,43,.15),transparent 60%),#0a0a0a;
+}
+.hero-bg-grid{
+  position:absolute;inset:0;z-index:0;opacity:.18;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(46,232,92,.18) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(46,232,92,.18) 1px,transparent 1px);
+  background-size:60px 60px;
+  mask-image:radial-gradient(ellipse at center,#000 30%,transparent 75%);
+}
+
+/* Hero hanok silhouette backdrop */
+.hero-hanok{
+  position:absolute;bottom:48px;left:0;right:0;height:200px;
+  z-index:1;pointer-events:none;opacity:.18;
+}
+.hero-hanok svg{position:absolute;bottom:0;width:100%;height:100%;display:block;}
+.hero-moon{
+  position:absolute;top:14%;right:8%;
+  width:130px;height:130px;border-radius:50%;
+  background:radial-gradient(circle at 35% 30%,#FFE6D5,#F4A582 60%,#C9633A);
+  filter:blur(.3px);
+  box-shadow:0 0 100px rgba(244,165,130,.4),inset -20px -20px 50px rgba(0,0,0,.25);
+  z-index:1;opacity:.22;
+}
+.hero-vert-kr{
+  position:absolute;top:18%;left:1.5%;z-index:3;
+  writing-mode:vertical-rl;text-orientation:mixed;
+  font-family:'Noto Sans KR';font-weight:900;
+  font-size:.7rem;letter-spacing:.5em;color:rgba(46,232,92,.45);
+  text-transform:uppercase;pointer-events:none;
+}
+
+/* Hero Left – Brand pitch */
+.hero-left{
+  position:relative;z-index:2;
+  padding:60px 5vw 60px 6vw;
+  display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:10px;
+  font-size:.65rem;font-weight:600;letter-spacing:.4em;text-transform:uppercase;
+  color:var(--green);margin-bottom:24px;
+  padding:6px 14px;border:1px solid rgba(46,232,92,.25);
+  background:rgba(46,232,92,.04);border-radius:99px;
+}
+.hero-eyebrow .dot{width:8px;height:8px;border-radius:50%;background:var(--green);box-shadow:0 0 10px var(--green);animation:pulse 1.6s ease-in-out infinite;}
+@keyframes pulse{50%{box-shadow:0 0 20px var(--green);transform:scale(1.4);}}
+
+.hero-h1{
+  font-family:'Black Han Sans',sans-serif;
+  font-size:clamp(3.4rem,7.2vw,7rem);
+  line-height:.86;letter-spacing:-.02em;
+  color:#fff;margin-bottom:18px;
+  text-transform:uppercase;
+}
+.hero-h1 .soo{
+  font-family:'Permanent Marker',cursive;
+  color:var(--green);
+  text-shadow:0 0 30px rgba(46,232,92,.5),0 0 60px rgba(46,232,92,.25);
+  display:inline-block;transform:rotate(-2deg);
+}
+.hero-h1 .kr{
+  display:block;font-family:'Noto Sans KR';font-weight:900;
+  color:var(--red);font-size:.5em;letter-spacing:.04em;
+  margin-top:8px;
+  text-shadow:0 0 18px rgba(230,57,70,.35);
+}
+.hero-tagline{
+  font-family:'Inter',sans-serif;font-weight:300;font-style:italic;
+  font-size:clamp(1rem,1.4vw,1.2rem);color:var(--cream);
+  max-width:460px;line-height:1.6;margin-bottom:36px;opacity:.85;
+}
+.hero-tagline strong{color:var(--green);font-weight:700;font-style:normal;}
+
+.hero-meta{display:flex;flex-wrap:wrap;gap:24px;margin-bottom:36px;}
+.hero-meta-item{display:flex;flex-direction:column;gap:4px;}
+.hero-meta-k{font-size:.6rem;color:var(--muted);letter-spacing:.25em;text-transform:uppercase;}
+.hero-meta-v{font-size:.95rem;color:#fff;font-weight:600;}
+.hero-meta-v .accent{color:var(--green);}
+
+.hero-btns{display:flex;flex-wrap:wrap;gap:14px;}
+.btn-primary{
+  position:relative;text-decoration:none;
+  font-size:.78rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;
+  padding:18px 34px;color:#000;background:var(--green);
+  clip-path:polygon(12px 0,100% 0,calc(100% - 12px) 100%,0 100%);
+  transition:all .25s;
+  box-shadow:0 12px 30px -10px rgba(46,232,92,.45);
+}
+.btn-primary:hover{background:#fff;transform:translateY(-3px);box-shadow:0 20px 40px -10px rgba(46,232,92,.55);}
+.btn-ghost{
+  position:relative;text-decoration:none;
+  font-size:.78rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;
+  padding:18px 34px;color:#fff;background:transparent;
+  border:1px solid rgba(255,255,255,.2);
+  transition:all .25s;
+}
+.btn-ghost:hover{border-color:var(--green);color:var(--green);}
+
+/* Marquee under hero */
+.hero-marq{
+  position:absolute;bottom:0;left:0;right:0;height:48px;z-index:5;
+  background:var(--green);color:#000;
+  display:flex;align-items:center;overflow:hidden;
+  border-top:1px solid #000;border-bottom:1px solid #000;
+}
+.marq-track{display:flex;gap:48px;white-space:nowrap;animation:marq 24s linear infinite;}
+.marq-track span{font-family:'Black Han Sans',sans-serif;font-size:1.1rem;letter-spacing:.06em;display:flex;align-items:center;gap:48px;}
+.marq-track span::after{content:'★';color:var(--red);}
+@keyframes marq{to{transform:translateX(-50%);}}
+
+/* === Hero Right — 3D Grill Scene === */
+.hero-right{
+  position:relative;z-index:2;overflow:hidden;
+  display:flex;align-items:center;justify-content:center;
+  perspective:1400px;
+}
+.grill-stage{
+  position:relative;width:100%;max-width:560px;aspect-ratio:1/1;
+  transform-style:preserve-3d;
+  transform:rotateX(48deg) rotateZ(-8deg);
+  animation:grillFloat 6s ease-in-out infinite;
+}
+@keyframes grillFloat{0%,100%{transform:rotateX(48deg) rotateZ(-8deg) translateY(0);}50%{transform:rotateX(48deg) rotateZ(-8deg) translateY(-18px);}}
+
+.grill-glow{
+  position:absolute;inset:-50px;border-radius:50%;
+  background:radial-gradient(ellipse at center,rgba(255,107,43,.45) 0%,rgba(230,57,70,.25) 30%,transparent 70%);
+  filter:blur(40px);z-index:0;
+  animation:glow 2.6s ease-in-out infinite;
+}
+@keyframes glow{50%{opacity:.55;transform:scale(1.08);}}
+
+.grill-plate{
+  position:absolute;inset:0;
+  border-radius:50%;
+  background:
+    radial-gradient(circle at 50% 50%,#3a2a1e 0%,#1a1410 70%);
+  border:6px solid #2a1d12;
+  box-shadow:
+    inset 0 0 40px rgba(0,0,0,.7),
+    inset 0 0 80px rgba(255,107,43,.3),
+    0 30px 60px rgba(0,0,0,.6);
+}
+.grill-grid{
+  position:absolute;inset:18%;border-radius:50%;
+  background:
+    repeating-linear-gradient(0deg,#1a1a1a 0 3px,transparent 3px 22px),
+    repeating-linear-gradient(90deg,#1a1a1a 0 3px,transparent 3px 22px),
+    radial-gradient(circle at 50% 50%,#5a3a20 0%,#2a1d12 80%);
+  box-shadow:inset 0 0 30px rgba(255,107,43,.4);
+}
+.grill-grid::after{
+  content:'';position:absolute;inset:0;border-radius:50%;
+  background:radial-gradient(circle at 40% 40%,rgba(255,200,120,.35),transparent 50%);
+  mix-blend-mode:screen;
+}
+
+/* Meat pieces on grill */
+.meat{
+  position:absolute;border-radius:14px;
+  box-shadow:0 6px 14px rgba(0,0,0,.7),inset 0 0 8px rgba(0,0,0,.4);
+  transform:translateZ(8px);
+}
+.meat.a{top:26%;left:30%;width:22%;height:14%;
+  background:linear-gradient(180deg,#8B3A1E,#5A2412 60%,#3A1810);
+  transform:translateZ(8px) rotate(-12deg);
+}
+.meat.b{top:42%;left:50%;width:18%;height:10%;
+  background:linear-gradient(180deg,#A04020,#6B2A14 60%,#4A1A0E);
+  transform:translateZ(10px) rotate(8deg);
+}
+.meat.c{top:56%;left:28%;width:16%;height:12%;
+  background:linear-gradient(180deg,#E63946,#A02838 60%,#641820);
+  transform:translateZ(8px) rotate(-6deg);
+}
+.meat.d{top:32%;left:55%;width:14%;height:8%;
+  background:linear-gradient(180deg,#7A3A20,#4F2412);
+  transform:translateZ(7px) rotate(18deg);
+}
+.meat::before{
+  content:'';position:absolute;inset:2px;border-radius:10px;
+  background:repeating-linear-gradient(45deg,transparent 0 6px,rgba(0,0,0,.3) 6px 8px);
+  opacity:.5;
+}
+
+/* Sizzle sparks */
+.spark{
+  position:absolute;width:5px;height:5px;border-radius:50%;
+  background:radial-gradient(circle,#fff,var(--gold) 30%,transparent 70%);
+  box-shadow:0 0 12px var(--gold);
+  animation:spark 2.4s ease-in infinite;
+  opacity:0;
+}
+.spark:nth-child(1){top:30%;left:38%;animation-delay:0s;}
+.spark:nth-child(2){top:46%;left:55%;animation-delay:.4s;}
+.spark:nth-child(3){top:58%;left:34%;animation-delay:.8s;}
+.spark:nth-child(4){top:36%;left:60%;animation-delay:1.2s;}
+.spark:nth-child(5){top:52%;left:42%;animation-delay:1.6s;}
+@keyframes spark{
+  0%{transform:translateY(0) translateZ(20px) scale(.6);opacity:0;}
+  10%{opacity:1;}
+  60%{transform:translateY(-120px) translateZ(60px) scale(1.4);opacity:.8;}
+  100%{transform:translateY(-200px) translateZ(80px) scale(0);opacity:0;}
+}
+
+/* Smoke */
+.smoke{
+  position:absolute;left:50%;top:30%;width:140px;height:140px;
+  border-radius:50%;
+  background:radial-gradient(circle,rgba(220,220,220,.35),transparent 60%);
+  filter:blur(20px);
+  animation:smoke 5s linear infinite;
+  opacity:0;
+}
+.smoke.s2{animation-delay:1.6s;left:30%;}
+.smoke.s3{animation-delay:3.2s;left:65%;}
+@keyframes smoke{
+  0%{transform:translate(-50%,0) translateZ(20px) scale(.4);opacity:0;}
+  20%{opacity:.6;}
+  100%{transform:translate(-50%,-260px) translateZ(80px) scale(1.6);opacity:0;}
+}
+
+/* Floating banchan plates */
+.banchan{
+  position:absolute;z-index:5;
+  width:90px;height:90px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  font-size:2.2rem;
+  background:radial-gradient(circle at 30% 30%,#222,#0a0a0a);
+  border:2px solid var(--line);
+  box-shadow:0 16px 30px rgba(0,0,0,.6);
+  transform:rotateX(-48deg);
+  animation:banFloat 4s ease-in-out infinite;
+}
+.banchan.b1{top:8%;right:6%;animation-delay:0s;}
+.banchan.b2{bottom:8%;left:4%;animation-delay:1.2s;}
+.banchan.b3{top:54%;right:-4%;animation-delay:2.4s;}
+@keyframes banFloat{50%{transform:rotateX(-48deg) translateY(-14px);}}
+
+/* === STRIP MARQUEE === */
+.strip{
+  background:#000;border-top:1px solid var(--line);border-bottom:1px solid var(--line);
+  padding:14px 0;overflow:hidden;position:relative;z-index:3;
+}
+.strip-track{display:flex;gap:50px;animation:marq 30s linear infinite;white-space:nowrap;}
+.strip-track .item{
+  font-family:'Black Han Sans',sans-serif;font-size:1rem;letter-spacing:.06em;
+  color:var(--muted);display:flex;align-items:center;gap:50px;
+}
+.strip-track .item::after{content:'●';color:var(--green);font-size:.6rem;}
+.strip-track .item .hi{color:var(--green);}
+
+/* === SECTIONS === */
+section{position:relative;z-index:3;padding:120px 5vw;}
+.sec-eyebrow{
+  font-size:.7rem;font-weight:700;letter-spacing:.4em;text-transform:uppercase;
+  color:var(--green);margin-bottom:14px;
+}
+.sec-title{
+  font-family:'Black Han Sans',sans-serif;
+  font-size:clamp(2.2rem,4.5vw,4rem);
+  line-height:.95;color:#fff;margin-bottom:18px;
+  letter-spacing:-.01em;
+}
+.sec-title em{font-style:normal;color:var(--red);font-family:'Permanent Marker',cursive;font-weight:400;}
+.sec-sub{font-size:1rem;color:var(--muted);max-width:560px;line-height:1.7;}
+
+/* === STORY === */
+#story{
+  display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;
+  background:linear-gradient(180deg,#0a0a0a,#0e0e0e);
+}
+.story-img-wrap{position:relative;}
+.story-img{
+  width:100%;aspect-ratio:4/5;border-radius:8px;overflow:hidden;
+  background:
+    linear-gradient(135deg,rgba(46,232,92,.05),rgba(230,57,70,.08)),
+    url('https://images.unsplash.com/photo-1632558144131-2c361b2d8472?auto=format&fit=crop&w=1200&q=80') center/cover;
+  position:relative;
+  box-shadow:0 30px 80px rgba(0,0,0,.5);
+}
+.story-img::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 50%,rgba(10,10,10,.7));
+}
+.story-badge{
+  position:absolute;bottom:-30px;right:-30px;
+  width:160px;height:160px;border-radius:50%;
+  background:var(--red);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;font-family:'Black Han Sans',sans-serif;
+  font-size:1.1rem;line-height:1.05;
+  box-shadow:0 20px 50px rgba(230,57,70,.4);
+  transform:rotate(-12deg);
+  border:6px solid #0a0a0a;
+}
+.story-badge .kr{display:block;font-family:'Noto Sans KR';font-weight:900;color:var(--gold);margin-bottom:4px;font-size:1.3rem;}
+
+.story-body p{font-size:1.05rem;line-height:1.8;color:var(--text);margin-bottom:24px;opacity:.85;}
+.story-body p strong{color:var(--green);font-weight:600;}
+.story-stats{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;margin-top:40px;padding-top:30px;border-top:1px solid var(--line);}
+.stat-n{font-family:'Black Han Sans',sans-serif;font-size:2.4rem;color:var(--green);line-height:1;}
+.stat-l{font-size:.7rem;color:var(--muted);letter-spacing:.18em;text-transform:uppercase;margin-top:4px;}
+
+/* === SIGNATURES === */
+#signatures{background:#070707;}
+.sig-head{display:flex;justify-content:space-between;align-items:flex-end;flex-wrap:wrap;gap:30px;margin-bottom:70px;}
+.sig-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:30px;
+}
+.sig-card{
+  position:relative;background:linear-gradient(180deg,#181818,#0f0f0f);
+  border:1px solid var(--line);
+  padding:0;overflow:hidden;
+  transition:all .4s cubic-bezier(.2,.8,.2,1);
+}
+.sig-card:hover{
+  transform:translateY(-10px);
+  border-color:rgba(46,232,92,.3);
+  box-shadow:0 30px 60px rgba(0,0,0,.6),0 0 0 1px rgba(46,232,92,.2);
+}
+.sig-img{
+  width:100%;aspect-ratio:4/3;background-size:cover;background-position:center;
+  position:relative;overflow:hidden;
+}
+.sig-img::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 50%,#0f0f0f);
+}
+.sig-card:nth-child(1) .sig-img{background-image:url('https://images.unsplash.com/photo-1583224944844-5b268c057b72?auto=format&fit=crop&w=1000&q=80');}
+.sig-card:nth-child(2) .sig-img{background-image:url('https://images.unsplash.com/photo-1635363638580-c2809d049eee?auto=format&fit=crop&w=1000&q=80');}
+.sig-card:nth-child(3) .sig-img{background-image:url('https://images.unsplash.com/photo-1582271045236-1c9d7b8b8b8b?auto=format&fit=crop&w=1000&q=80'),url('https://images.unsplash.com/photo-1626863905121-3b0c0ed7b94c?auto=format&fit=crop&w=1000&q=80');}
+.sig-card:nth-child(4) .sig-img{background-image:url('https://images.unsplash.com/photo-1576749872435-ff88a71c1ae5?auto=format&fit=crop&w=1000&q=80');}
+.sig-card:nth-child(5) .sig-img{background-image:url('https://images.unsplash.com/photo-1473093295043-cdd812d0e601?auto=format&fit=crop&w=1000&q=80');}
+.sig-card:nth-child(6) .sig-img{background-image:url('https://images.unsplash.com/photo-1606755962773-d324e2dabd95?auto=format&fit=crop&w=1000&q=80');}
+
+.sig-tag{
+  position:absolute;top:14px;left:14px;z-index:2;
+  font-size:.6rem;letter-spacing:.25em;text-transform:uppercase;
+  background:var(--green);color:#000;padding:5px 10px;font-weight:800;
+}
+.sig-body{padding:24px 26px 30px;}
+.sig-kr{font-family:'Noto Sans KR';font-weight:700;color:var(--red);font-size:.85rem;letter-spacing:.05em;margin-bottom:6px;}
+.sig-title{font-family:'Black Han Sans',sans-serif;font-size:1.5rem;color:#fff;margin-bottom:10px;letter-spacing:-.01em;}
+.sig-desc{font-size:.9rem;color:var(--muted);line-height:1.6;margin-bottom:18px;}
+.sig-price{font-family:'Bebas Neue',sans-serif;font-size:1.6rem;color:var(--green);letter-spacing:.04em;}
+.sig-price small{font-size:.7rem;color:var(--muted);}
+
+/* === TRADITION SECTION (hanji paper aesthetic) === */
+#tradition{
+  background:#F6F1E6;color:#1A1410;padding:0;position:relative;overflow:hidden;
+}
+#tradition::before{
+  content:'';position:absolute;inset:0;pointer-events:none;opacity:.5;
+  background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='hanji'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='1.2' numOctaves='3'/%3E%3CfeColorMatrix values='0 0 0 0 0.6 0 0 0 0 0.5 0 0 0 0 0.35 0 0 0 0.15 0'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23hanji)' /%3E%3C/svg%3E");
+}
+.trad-wrap{
+  position:relative;z-index:2;
+  display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:80px;
+  padding:140px 5vw;
+  max-width:1400px;margin:0 auto;
+}
+.trad-text{padding-right:20px;}
+.trad-eyebrow{
+  display:inline-flex;align-items:center;gap:14px;
+  font-size:.7rem;font-weight:700;letter-spacing:.4em;text-transform:uppercase;
+  color:#C92027;margin-bottom:24px;
+}
+.trad-eyebrow::before,.trad-eyebrow::after{content:'';height:1px;width:30px;background:#C92027;}
+.trad-h2{
+  font-family:'Black Han Sans',sans-serif;
+  font-size:clamp(2.4rem,4.5vw,4.2rem);
+  line-height:.95;color:#1A1410;margin-bottom:24px;letter-spacing:-.01em;
+}
+.trad-h2 .kr{
+  display:block;font-family:'Noto Sans KR';color:#C92027;font-weight:900;
+  font-size:.65em;margin-top:6px;letter-spacing:.02em;
+}
+.trad-text p{font-size:1.02rem;line-height:1.85;color:#3A2A1E;margin-bottom:20px;opacity:.88;}
+.trad-text p strong{color:#C92027;font-weight:700;}
+.trad-quote{
+  margin-top:36px;padding:24px 30px;
+  border-left:4px solid #C92027;background:rgba(201,32,39,.04);
+  font-family:'Permanent Marker',cursive;font-size:1.15rem;color:#1A1410;line-height:1.5;
+}
+.trad-quote .kr{display:block;font-family:'Noto Sans KR';font-weight:900;color:#C92027;font-size:.85rem;letter-spacing:.06em;margin-bottom:8px;}
+.trad-seal{display:flex;align-items:center;gap:18px;margin-top:30px;}
+.trad-seal .label{font-size:.7rem;letter-spacing:.3em;text-transform:uppercase;color:#8A7A68;}
+
+/* The hanok illustration */
+.trad-art{position:relative;}
+.trad-art-frame{
+  position:relative;background:#F6F1E6;
+  padding:30px 24px 0;
+  border:1px solid rgba(26,20,16,.12);
+  box-shadow:0 30px 80px rgba(26,20,16,.12);
+}
+.trad-art-frame::before,.trad-art-frame::after{
+  content:'';position:absolute;
+  width:18px;height:18px;
+  border:1px solid #C92027;
+}
+.trad-art-frame::before{top:8px;left:8px;border-right:none;border-bottom:none;}
+.trad-art-frame::after{bottom:8px;right:8px;border-left:none;border-top:none;}
+.trad-art-frame .corner-tr{position:absolute;top:8px;right:8px;width:18px;height:18px;border:1px solid #C92027;border-left:none;border-bottom:none;}
+.trad-art-frame .corner-bl{position:absolute;bottom:8px;left:8px;width:18px;height:18px;border:1px solid #C92027;border-right:none;border-top:none;}
+
+/* === EXPERIENCE PARALLAX === */
+#experience{
+  background:#040404;padding:160px 5vw;overflow:hidden;position:relative;
+}
+.exp-bg{
+  position:absolute;inset:0;z-index:0;opacity:.4;
+  background:url('https://images.unsplash.com/photo-1535007813616-79dc02ba4021?auto=format&fit=crop&w=1800&q=80') center/cover fixed;
+  filter:saturate(1.1) contrast(1.05);
+}
+.exp-bg::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,#040404 0%,rgba(4,4,4,.65) 30%,rgba(4,4,4,.65) 70%,#040404 100%);
+}
+.exp-content{position:relative;z-index:2;max-width:920px;margin:0 auto;text-align:center;}
+.exp-quote{
+  font-family:'Permanent Marker',cursive;
+  font-size:clamp(1.6rem,3.2vw,2.8rem);
+  line-height:1.3;color:#fff;margin-bottom:36px;letter-spacing:-.01em;
+}
+.exp-quote .hi{color:var(--green);}
+.exp-attr{font-size:.7rem;letter-spacing:.4em;text-transform:uppercase;color:var(--muted);}
+.exp-attr .star{color:var(--gold);letter-spacing:.4em;}
+
+/* === LOCATIONS === */
+#locations{background:#0a0a0a;}
+.loc-grid{
+  display:grid;grid-template-columns:1fr 1.2fr;gap:60px;margin-top:50px;
+}
+.loc-list{display:flex;flex-direction:column;gap:18px;}
+.loc-card{
+  position:relative;cursor:pointer;
+  background:linear-gradient(180deg,#161616,#101010);
+  border:1px solid var(--line);
+  padding:24px 26px;
+  transition:all .3s ease;
+  display:grid;grid-template-columns:auto 1fr auto;gap:18px;align-items:center;
+}
+.loc-card:hover,.loc-card.active{
+  border-color:var(--green);
+  background:linear-gradient(180deg,#1a1a1a,#121212);
+  transform:translateX(4px);
+}
+.loc-card.active{box-shadow:inset 4px 0 0 var(--green);}
+.loc-num{
+  width:46px;height:46px;border-radius:50%;
+  background:var(--red);color:#fff;
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Black Han Sans',sans-serif;font-size:1.2rem;
+  flex-shrink:0;
+}
+.loc-card.active .loc-num{background:var(--green);color:#000;}
+.loc-info h3{font-family:'Black Han Sans',sans-serif;font-size:1.2rem;color:#fff;letter-spacing:-.01em;margin-bottom:4px;}
+.loc-info p{font-size:.82rem;color:var(--muted);line-height:1.45;}
+.loc-info p .ph{display:inline-block;color:var(--green);font-weight:600;margin-top:4px;font-family:'Bebas Neue',sans-serif;letter-spacing:.04em;font-size:1rem;}
+.loc-arrow{font-size:1.4rem;color:var(--muted);transition:all .25s;}
+.loc-card:hover .loc-arrow{color:var(--green);transform:translateX(4px);}
+
+.loc-map-wrap{position:relative;height:560px;border:1px solid var(--line);overflow:hidden;}
+.loc-map-wrap iframe{width:100%;height:100%;border:0;filter:invert(.92) hue-rotate(180deg) saturate(.6) brightness(.95);}
+.loc-map-badge{
+  position:absolute;top:18px;left:18px;z-index:5;
+  background:rgba(10,10,10,.85);backdrop-filter:blur(10px);
+  padding:10px 14px;border:1px solid var(--line);
+  font-size:.7rem;letter-spacing:.18em;text-transform:uppercase;color:var(--green);
+  display:flex;align-items:center;gap:8px;
+}
+.loc-map-badge .dot{width:8px;height:8px;border-radius:50%;background:var(--green);animation:pulse 1.4s infinite;}
+
+/* === CTA STRIP === */
+#cta-strip{
+  background:var(--green);color:#000;padding:80px 5vw;text-align:center;position:relative;overflow:hidden;
+}
+#cta-strip::before{
+  content:'고기구이 SOOPORK 고기구이 SOOPORK 고기구이 SOOPORK';
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  font-family:'Black Han Sans',sans-serif;font-size:18rem;color:rgba(0,0,0,.04);
+  white-space:nowrap;letter-spacing:.04em;pointer-events:none;
+}
+#cta-strip h2{
+  font-family:'Black Han Sans',sans-serif;
+  font-size:clamp(2rem,5vw,4.4rem);line-height:.96;letter-spacing:-.01em;
+  color:#000;margin-bottom:24px;position:relative;z-index:2;
+}
+#cta-strip h2 .kr{font-family:'Noto Sans KR';color:var(--red);font-weight:900;}
+#cta-strip p{font-size:1rem;color:#1a1a1a;max-width:520px;margin:0 auto 36px;position:relative;z-index:2;line-height:1.7;}
+#cta-strip .btn-cta-black{
+  display:inline-block;text-decoration:none;
+  font-size:.8rem;font-weight:800;letter-spacing:.2em;text-transform:uppercase;
+  padding:20px 40px;background:#000;color:var(--green);
+  clip-path:polygon(14px 0,100% 0,calc(100% - 14px) 100%,0 100%);
+  position:relative;z-index:2;
+  transition:all .25s;
+}
+#cta-strip .btn-cta-black:hover{background:#fff;color:#000;transform:translateY(-3px);}
+
+/* === FOOTER === */
+footer{background:#050505;padding:80px 5vw 30px;border-top:1px solid var(--line);position:relative;z-index:3;}
+.foot-grid{display:grid;grid-template-columns:1.6fr 1fr 1fr 1.2fr;gap:50px;margin-bottom:50px;}
+.foot-brand .brand-logo{font-size:2.4rem;}
+.foot-brand p{color:var(--muted);font-size:.88rem;line-height:1.7;margin-top:16px;max-width:280px;}
+.foot-col h4{font-size:.72rem;letter-spacing:.3em;text-transform:uppercase;color:#fff;margin-bottom:18px;font-weight:700;}
+.foot-col a,.foot-col p{display:block;color:var(--muted);font-size:.88rem;line-height:1.9;text-decoration:none;transition:color .2s;}
+.foot-col a:hover{color:var(--green);}
+.foot-social{display:flex;gap:10px;margin-top:14px;}
+.foot-social a{
+  width:38px;height:38px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  border:1px solid var(--line);color:var(--muted);
+  font-family:'Black Han Sans',sans-serif;font-size:.9rem;
+  transition:all .2s;
+}
+.foot-social a:hover{background:var(--green);color:#000;border-color:var(--green);}
+.foot-bot{
+  border-top:1px solid var(--line);padding-top:24px;
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:14px;
+  font-size:.72rem;color:var(--muted);letter-spacing:.15em;text-transform:uppercase;
+}
+
+/* === RESPONSIVE === */
+@media (max-width:980px){
+  .nav-links{display:none;}
+  .hamburger{display:flex;}
+  #hero{grid-template-columns:1fr;padding-top:96px;}
+  .hero-right{order:-1;min-height:60vh;padding:20px;}
+  .grill-stage{max-width:380px;}
+  .hero-left{padding:30px 6vw 80px;}
+  #story{grid-template-columns:1fr;gap:50px;}
+  .story-badge{width:120px;height:120px;font-size:.9rem;right:0;bottom:-20px;}
+  .trad-wrap{grid-template-columns:1fr;gap:50px;padding:100px 6vw;}
+  .hero-vert-kr{display:none;}
+  .lantern{display:none;}
+  .hero-moon{width:80px;height:80px;top:8%;right:6%;}
+  .sig-grid{grid-template-columns:1fr 1fr;}
+  .loc-grid{grid-template-columns:1fr;}
+  .loc-map-wrap{height:400px;}
+  .foot-grid{grid-template-columns:1fr 1fr;gap:30px;}
+}
+@media (max-width:560px){
+  .sig-grid{grid-template-columns:1fr;}
+  .foot-grid{grid-template-columns:1fr;}
+  section{padding:80px 6vw;}
+  .hero-meta{flex-direction:column;gap:14px;}
+}
+
+/* MOBILE NAV */
+.mob-nav{
+  display:none;position:fixed;inset:0;background:#0a0a0a;z-index:300;
+  flex-direction:column;align-items:center;justify-content:center;gap:24px;
+}
+.mob-nav.open{display:flex;}
+.mob-nav a{color:#fff;font-family:'Black Han Sans',sans-serif;font-size:2rem;text-decoration:none;}
+.mob-nav a:hover{color:var(--green);}
+.mob-close{position:absolute;top:24px;right:5vw;background:none;border:none;color:#fff;font-size:1.6rem;cursor:pointer;font-family:'Permanent Marker',cursive;}
+
+/* Scroll reveal */
+.reveal{opacity:0;transform:translateY(30px);transition:all .9s cubic-bezier(.2,.8,.2,1);}
+.reveal.in{opacity:1;transform:none;}
+</style>
+</head>
+<body>
+
+<!-- CHERRY BLOSSOM PETALS -->
+<div class="petals" aria-hidden="true">
+  <div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div>
+  <div class="petal"></div><div class="petal"></div><div class="petal"></div><div class="petal"></div>
+</div>
+
+<!-- NAV -->
+<nav id="nav">
+  <a href="#" class="brand">
+    <div>
+      <div class="brand-logo">Soo<span class="pork">PORK</span></div>
+      <div class="brand-sub">고기구이</div>
+    </div>
+  </a>
+  <ul class="nav-links">
+    <li><a href="#story">Story</a></li>
+    <li><a href="#signatures">Menu</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#locations">Locations</a></li>
+  </ul>
+  <a href="#locations" class="nav-cta">Reserve</a>
+  <button class="hamburger" id="ham" aria-label="menu"><span></span><span></span><span></span></button>
+</nav>
+
+<div class="mob-nav" id="mobnav">
+  <button class="mob-close" id="mobclose">CLOSE ✕</button>
+  <a href="#story">Story</a>
+  <a href="#signatures">Menu</a>
+  <a href="#experience">Experience</a>
+  <a href="#locations">Locations</a>
+</div>
+
+<!-- HERO -->
+<section id="hero">
+  <div class="hero-bg-grid"></div>
+  <div class="hero-moon" aria-hidden="true"></div>
+  <div class="hero-vert-kr">SOOPORK · 한국식 바베큐 레스토랑</div>
+
+  <!-- Hanging Korean lanterns -->
+  <div class="lantern l1" aria-hidden="true">
+    <div class="line"></div>
+    <div class="ball"></div>
+    <div class="tassel"></div>
+  </div>
+  <div class="lantern l2" aria-hidden="true">
+    <div class="line"></div>
+    <div class="ball"></div>
+    <div class="tassel"></div>
+  </div>
+
+  <!-- Hanok rooftop silhouette behind everything -->
+  <div class="hero-hanok" aria-hidden="true">
+    <svg viewBox="0 0 1600 200" preserveAspectRatio="xMidYEnd slice" xmlns="http://www.w3.org/2000/svg">
+      <!-- Tiled curved hanok roof -->
+      <path d="M0 200 L0 130 Q60 90 130 95 L210 60 Q260 40 320 56 L400 30 Q480 14 560 36 L640 18 Q720 4 800 22 L880 6 Q960 -6 1040 18 L1120 28 Q1200 14 1280 36 L1360 60 Q1420 50 1480 78 L1600 110 L1600 200 Z" fill="#1A1410" opacity="0.95"/>
+      <!-- Roof tile texture lines -->
+      <path d="M0 130 Q60 90 130 95 L210 60 Q260 40 320 56 L400 30 Q480 14 560 36 L640 18 Q720 4 800 22 L880 6 Q960 -6 1040 18 L1120 28 Q1200 14 1280 36 L1360 60 Q1420 50 1480 78 L1600 110" fill="none" stroke="#C92027" stroke-width="2" opacity=".4"/>
+      <path d="M0 144 Q60 108 130 113 L210 80 Q260 60 320 76 L400 50 Q480 36 560 56 L640 40 Q720 26 800 42 L880 26 Q960 16 1040 38 L1120 48 Q1200 36 1280 56 L1360 78 Q1420 70 1480 96 L1600 124" fill="none" stroke="#5A3020" stroke-width="1" opacity=".5"/>
+      <!-- Hanok pillars -->
+      <rect x="230" y="100" width="6" height="100" fill="#1A1410"/>
+      <rect x="700" y="60" width="6" height="140" fill="#1A1410"/>
+      <rect x="1120" y="85" width="6" height="115" fill="#1A1410"/>
+    </svg>
+  </div>
+
+  <div class="hero-left">
+    <div class="hero-eyebrow"><span class="dot"></span>Open · Park Od · Sumber · Cedar City</div>
+    <h1 class="hero-h1">
+      <span class="soo">Soo</span>Pork.<br/>
+      Sizzle.<br/>Sear. Soju.
+      <span class="kr">고기구이 · 한국식 바베큐</span>
+    </h1>
+    <p class="hero-tagline">
+      Korean barbeque, tableside — the way it was meant to be. <strong>Asian taste, Mongolian heart.</strong> Premium cuts, generous banchan, signature shake cocktails, and the kind of long, loud, unhurried nights you bring your whole crew for.
+    </p>
+    <div class="hero-meta">
+      <div class="hero-meta-item">
+        <span class="hero-meta-k">Locations</span>
+        <span class="hero-meta-v"><span class="accent">3</span> in Ulaanbaatar</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-k">Specialty</span>
+        <span class="hero-meta-v">Pork · Beef · Banchan</span>
+      </div>
+      <div class="hero-meta-item">
+        <span class="hero-meta-k">Vibe</span>
+        <span class="hero-meta-v">Lounge · Group · Late</span>
+      </div>
+    </div>
+    <div class="hero-btns">
+      <a href="#locations" class="btn-primary">Find a Table</a>
+      <a href="#signatures" class="btn-ghost">See the Menu</a>
+    </div>
+  </div>
+
+  <div class="hero-right">
+    <div class="grill-stage" id="grill">
+      <div class="grill-glow"></div>
+      <div class="grill-plate"></div>
+      <div class="grill-grid">
+        <div class="meat a"></div>
+        <div class="meat b"></div>
+        <div class="meat c"></div>
+        <div class="meat d"></div>
+      </div>
+      <div class="smoke"></div>
+      <div class="smoke s2"></div>
+      <div class="smoke s3"></div>
+      <div class="spark"></div>
+      <div class="spark"></div>
+      <div class="spark"></div>
+      <div class="spark"></div>
+      <div class="spark"></div>
+    </div>
+    <div class="banchan b1">🌶️</div>
+    <div class="banchan b2">🥢</div>
+    <div class="banchan b3">🍶</div>
+  </div>
+
+  <div class="hero-marq">
+    <div class="marq-track">
+      <span>Premium Pork Belly</span><span>고기구이</span><span>Sizzling Galbi</span><span>Banchan All Day</span><span>Signature Shake Cocktails</span><span>Lounge & Restaurant</span>
+      <span>Premium Pork Belly</span><span>고기구이</span><span>Sizzling Galbi</span><span>Banchan All Day</span><span>Signature Shake Cocktails</span><span>Lounge & Restaurant</span>
+    </div>
+  </div>
+</section>
+
+<!-- DANCHEONG STRIPE -->
+<div class="dancheong" aria-hidden="true">
+  <span></span><span></span><span></span><span></span><span></span>
+</div>
+
+<!-- STRIP -->
+<div class="strip">
+  <div class="strip-track">
+    <div class="item"><span class="hi">Park Od Mall · 2F</span></div>
+    <div class="item">Open Daily · 11:00 – 23:00</div>
+    <div class="item"><span class="hi">Sumber Tower · 2F</span></div>
+    <div class="item">Groups Welcome</div>
+    <div class="item"><span class="hi">Yaarmag · Cedar City</span></div>
+    <div class="item">Reservations: +976 7710 0220</div>
+    <div class="item"><span class="hi">Park Od Mall · 2F</span></div>
+    <div class="item">Open Daily · 11:00 – 23:00</div>
+    <div class="item"><span class="hi">Sumber Tower · 2F</span></div>
+    <div class="item">Groups Welcome</div>
+    <div class="item"><span class="hi">Yaarmag · Cedar City</span></div>
+    <div class="item">Reservations: +976 7710 0220</div>
+  </div>
+</div>
+
+<!-- STORY -->
+<section id="story">
+  <div class="story-img-wrap reveal">
+    <div class="story-img"></div>
+    <div class="story-badge">
+      <div>
+        <span class="kr">맛있다</span>
+        SINCE<br/>OPENING<br/>DAY
+      </div>
+    </div>
+  </div>
+  <div class="story-body reveal">
+    <div class="sec-eyebrow">Our Story</div>
+    <h2 class="sec-title">Built around the <em>fire</em>.</h2>
+    <p>
+      SooPork was born from a simple idea — that Korean BBQ tastes best when the grill is yours, the night is long, and the people around you are loud. We import what matters, source pork and beef cuts that crisp and sizzle the right way, and pile the table with the banchan you'd hope for from a kitchen run by people who actually love this food.
+    </p>
+    <p>
+      Across three locations in Ulaanbaatar, we serve <strong>premium grilled meat</strong>, generous Korean classics, spicy tteokbokki, fried chicken, and our signature shake cocktails — in a space that's part restaurant, part lounge. Bring your team. Bring your family. Stay late.
+    </p>
+    <div class="story-stats">
+      <div><div class="stat-n">3</div><div class="stat-l">Locations</div></div>
+      <div><div class="stat-n">12+</div><div class="stat-l">Cuts on the Grill</div></div>
+      <div><div class="stat-n">∞</div><div class="stat-l">Banchan Refills</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- TRADITION (Hanok / Hanji aesthetic) -->
+<section id="tradition">
+  <div class="trad-wrap">
+    <div class="trad-text reveal">
+      <div class="trad-eyebrow">Tradition · 전통</div>
+      <h2 class="trad-h2">
+        Where Hanok meets <em style="color:#C92027;font-family:'Permanent Marker',cursive;font-style:normal;">Highland</em>.
+        <span class="kr">한옥의 정신, 몽골의 마음</span>
+      </h2>
+      <p>
+        Korean barbeque is older than the words written for it — a fire, a grate, a circle of friends. We bring that ritual to Ulaanbaatar with the cuts, the banchan, and the unhurried hours that make it feel like home.
+      </p>
+      <p>
+        Inside, expect <strong>warm wood, paper lanterns, and a kitchen that doesn't cut corners</strong>. Outside, the steppe. In the middle — you, a hot grill, and a long night.
+      </p>
+      <div class="trad-quote">
+        <span class="kr">정성껏 차려드립니다 — Prepared with care.</span>
+        "Asian taste, Mongolian heart. The fire belongs to whoever sits at the table."
+      </div>
+      <div class="trad-seal">
+        <div class="dojang">수<br/>돼</div>
+        <div class="label">SooPork Seal of Sizzle</div>
+      </div>
+    </div>
+
+    <div class="trad-art reveal">
+      <div class="trad-art-frame">
+        <div class="corner-tr"></div>
+        <div class="corner-bl"></div>
+        <div class="hanok-scene">
+          <div class="sun"></div>
+          <svg viewBox="0 0 500 400" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <!-- Distant mountains -->
+            <path d="M-20 280 L60 220 L120 250 L200 200 L280 240 L360 210 L440 245 L520 215 L520 400 L-20 400 Z" fill="#C9C2AE" opacity=".5"/>
+            <path d="M-20 310 L80 260 L160 285 L240 245 L320 280 L400 255 L480 285 L520 270 L520 400 L-20 400 Z" fill="#9A8F75" opacity=".55"/>
+
+            <!-- Cherry blossom branch top-left -->
+            <g transform="translate(20,30)">
+              <path d="M0 0 Q40 30 80 50 Q110 60 130 100" stroke="#5A3020" stroke-width="2.5" fill="none"/>
+              <path d="M40 35 Q55 28 65 22" stroke="#5A3020" stroke-width="1.5" fill="none"/>
+              <path d="M90 55 Q105 50 120 48" stroke="#5A3020" stroke-width="1.5" fill="none"/>
+              <circle cx="20" cy="15" r="6" fill="#F4A4B8"/>
+              <circle cx="55" cy="30" r="7" fill="#F38AAB"/>
+              <circle cx="80" cy="48" r="5" fill="#FFB7C8"/>
+              <circle cx="110" cy="60" r="6" fill="#F4A4B8"/>
+              <circle cx="68" cy="20" r="5" fill="#FFB7C8"/>
+              <circle cx="130" cy="98" r="7" fill="#F38AAB"/>
+            </g>
+
+            <!-- Cherry blossom branch top-right -->
+            <g transform="translate(360,40)">
+              <path d="M140 0 Q90 30 50 50 Q20 70 0 100" stroke="#5A3020" stroke-width="2.5" fill="none"/>
+              <path d="M100 28 Q85 22 75 18" stroke="#5A3020" stroke-width="1.5" fill="none"/>
+              <circle cx="120" cy="12" r="6" fill="#F4A4B8"/>
+              <circle cx="85" cy="32" r="7" fill="#F38AAB"/>
+              <circle cx="60" cy="52" r="5" fill="#FFB7C8"/>
+              <circle cx="30" cy="78" r="6" fill="#F4A4B8"/>
+              <circle cx="73" cy="20" r="5" fill="#FFB7C8"/>
+            </g>
+
+            <!-- HANOK building -->
+            <g transform="translate(110,180)">
+              <!-- Curved tiled roof -->
+              <path d="M-30 100 Q-10 50 30 40 L120 30 Q160 25 200 30 L290 40 Q330 50 350 100 Q310 110 250 105 L70 105 Q10 110 -30 100 Z" fill="#3A2418"/>
+              <path d="M-30 100 Q-10 50 30 40 L120 30 Q160 25 200 30 L290 40 Q330 50 350 100" stroke="#C92027" stroke-width="3" fill="none" opacity=".7"/>
+              <!-- Roof tile texture -->
+              <path d="M-20 90 Q10 55 50 48 L130 40 Q160 38 200 40 L280 50 Q320 58 340 90" stroke="#5A3020" stroke-width="1.5" fill="none" opacity=".6"/>
+              <path d="M-10 78 Q20 55 60 50 L140 44 Q170 42 200 44 L280 54 Q310 60 330 78" stroke="#5A3020" stroke-width="1" fill="none" opacity=".4"/>
+              <!-- Building body -->
+              <rect x="20" y="105" width="280" height="80" fill="#F6F1E6" stroke="#3A2418" stroke-width="2"/>
+              <!-- Doors/windows -->
+              <rect x="60" y="120" width="50" height="60" fill="#3A2418" opacity=".85"/>
+              <rect x="135" y="115" width="60" height="70" fill="#C92027" opacity=".88"/>
+              <rect x="220" y="120" width="50" height="60" fill="#3A2418" opacity=".85"/>
+              <!-- Pillars -->
+              <rect x="20" y="105" width="6" height="80" fill="#3A2418"/>
+              <rect x="120" y="105" width="6" height="80" fill="#3A2418"/>
+              <rect x="200" y="105" width="6" height="80" fill="#3A2418"/>
+              <rect x="294" y="105" width="6" height="80" fill="#3A2418"/>
+              <!-- Stone base -->
+              <rect x="10" y="185" width="300" height="14" fill="#8A7A68"/>
+              <!-- Dot pattern on roof curve -->
+              <circle cx="160" cy="32" r="3" fill="#C92027"/>
+            </g>
+
+            <!-- Foreground rocks -->
+            <ellipse cx="50" cy="350" rx="40" ry="14" fill="#7A6A55" opacity=".6"/>
+            <ellipse cx="450" cy="355" rx="50" ry="16" fill="#7A6A55" opacity=".55"/>
+
+            <!-- Birds in sky -->
+            <path d="M150 90 Q155 85 160 90 Q165 85 170 90" stroke="#3A2418" stroke-width="1.5" fill="none"/>
+            <path d="M380 110 Q385 105 390 110 Q395 105 400 110" stroke="#3A2418" stroke-width="1.5" fill="none"/>
+            <path d="M280 70 Q284 67 288 70 Q292 67 296 70" stroke="#3A2418" stroke-width="1.2" fill="none"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- mountain silhouette transitioning into next dark section -->
+  <div class="mountain-strip" aria-hidden="true">
+    <svg viewBox="0 0 1600 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+      <path d="M0 120 L0 80 L120 50 L240 75 L360 35 L480 65 L600 30 L720 60 L840 25 L960 55 L1080 30 L1200 60 L1320 40 L1440 65 L1600 45 L1600 120 Z" fill="#070707"/>
+    </svg>
+  </div>
+</section>
+
+<!-- KOREAN CLOUD PATTERN BORDER -->
+<div class="kpattern" aria-hidden="true"></div>
+
+<!-- SIGNATURES -->
+<section id="signatures">
+  <div class="sig-head reveal">
+    <div>
+      <div class="sec-eyebrow">Off the Grill · 메뉴</div>
+      <h2 class="sec-title">Signature <em>plates</em>. <span style="display:block;font-family:'Noto Sans KR';color:var(--red);font-weight:900;font-size:.5em;margin-top:8px;">시그니처 한식 바베큐</span></h2>
+    </div>
+    <p class="sec-sub">A short list of what we're known for. <strong style="color:var(--green);">맛있게 드세요</strong> — order one, order all of them. The grill is yours for the night.</p>
+  </div>
+
+  <div class="sig-grid">
+    <div class="sig-card reveal">
+      <div class="sig-img"><span class="sig-tag">House</span></div>
+      <div class="sig-body">
+        <div class="sig-kr">삼겹살</div>
+        <h3 class="sig-title">Samgyeopsal Pork Belly</h3>
+        <p class="sig-desc">Thick-cut pork belly seared tableside, crisp at the edges, fat rendered through. The dish we're named for.</p>
+        <div class="sig-price">28,000<small>₮ / portion</small></div>
+      </div>
+    </div>
+
+    <div class="sig-card reveal">
+      <div class="sig-img"><span class="sig-tag">Premium</span></div>
+      <div class="sig-body">
+        <div class="sig-kr">갈비</div>
+        <h3 class="sig-title">Marinated Galbi</h3>
+        <p class="sig-desc">Beef short rib marinated in our house soy-pear glaze. Sweet, smoky, dangerous when you're hungry.</p>
+        <div class="sig-price">42,000<small>₮ / portion</small></div>
+      </div>
+    </div>
+
+    <div class="sig-card reveal">
+      <div class="sig-img"><span class="sig-tag">Spicy</span></div>
+      <div class="sig-body">
+        <div class="sig-kr">떡볶이</div>
+        <h3 class="sig-title">Spicy Tteokbokki</h3>
+        <p class="sig-desc">Rice cakes simmered in gochujang with fish cake, scallion and sesame. The crowd-favorite that disappears first.</p>
+        <div class="sig-price">18,000<small>₮ / bowl</small></div>
+      </div>
+    </div>
+
+    <div class="sig-card reveal">
+      <div class="sig-img"><span class="sig-tag">Crispy</span></div>
+      <div class="sig-body">
+        <div class="sig-kr">양념 치킨</div>
+        <h3 class="sig-title">Yangnyeom Chicken</h3>
+        <p class="sig-desc">Twice-fried, glazed in spicy-sweet gochujang sauce. Sesame, scallion, and absolute joy on the plate.</p>
+        <div class="sig-price">32,000<small>₮ / half</small></div>
+      </div>
+    </div>
+
+    <div class="sig-card reveal">
+      <div class="sig-img"><span class="sig-tag">Bar</span></div>
+      <div class="sig-body">
+        <div class="sig-kr">쉐이크 칵테일</div>
+        <h3 class="sig-title">SooPork Shake Cocktail</h3>
+        <p class="sig-desc">Our signature shake-style cocktail — frothed at the table. Soju, fruit, sugar, ice. Order one. Then another.</p>
+        <div class="sig-price">14,000<small>₮ / glass</small></div>
+      </div>
+    </div>
+
+    <div class="sig-card reveal">
+      <div class="sig-img"><span class="sig-tag">Comfort</span></div>
+      <div class="sig-body">
+        <div class="sig-kr">김치찌개</div>
+        <h3 class="sig-title">Kimchi Jjigae</h3>
+        <p class="sig-desc">Bubbling stew of aged kimchi, tofu, and pork. Served in stone — still simmering when it arrives.</p>
+        <div class="sig-price">16,000<small>₮ / pot</small></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- EXPERIENCE -->
+<section id="experience">
+  <div class="exp-bg"></div>
+  <div class="exp-content reveal">
+    <div class="sec-eyebrow" style="justify-content:center;">Lounge · Restaurant · Late Nights</div>
+    <p class="exp-quote">
+      "We came for the <span class="hi">samgyeopsal</span>. We stayed for the second bottle of soju, the third round of banchan, and the fact that nobody asked us to leave."
+    </p>
+    <p class="exp-attr"><span class="star">★★★★★</span> &nbsp;·&nbsp; The kind of review we live for.</p>
+  </div>
+</section>
+
+<!-- LOCATIONS -->
+<section id="locations">
+  <div class="reveal" style="display:grid;grid-template-columns:1fr auto;align-items:center;gap:30px;">
+    <div>
+      <div class="sec-eyebrow">Find Us · 위치</div>
+      <h2 class="sec-title">Three tables in <em>Ulaanbaatar</em>.</h2>
+      <p class="sec-sub">Same fire. Same banchan. Three neighborhoods. Tap a location to set your map.</p>
+    </div>
+    <div class="taegeuk" aria-hidden="true" title="Taegeuk"></div>
+  </div>
+
+  <div class="loc-grid">
+    <div class="loc-list reveal">
+
+      <div class="loc-card active" data-q="Park Od Mall, Ulaanbaatar, Mongolia" data-lat="47.9120" data-lng="106.9180">
+        <div class="loc-num">01</div>
+        <div class="loc-info">
+          <h3>Park Od Mall · 2F</h3>
+          <p>Ikh khuree, Ulaanbaatar 13380<br/>
+          <span class="ph">+976 7710 0220</span></p>
+        </div>
+        <div class="loc-arrow">→</div>
+      </div>
+
+      <div class="loc-card" data-q="Sumber Tower Khan-Uul, Ulaanbaatar, Mongolia" data-lat="47.9050" data-lng="106.9270">
+        <div class="loc-num">02</div>
+        <div class="loc-info">
+          <h3>Sumber Tower · 2F</h3>
+          <p>Khan-Uul District, Ulaanbaatar<br/>
+          <span class="ph">+976 7719 1166</span></p>
+        </div>
+        <div class="loc-arrow">→</div>
+      </div>
+
+      <div class="loc-card" data-q="Yaarmag Cedar City, Ulaanbaatar, Mongolia" data-lat="47.8800" data-lng="106.9100">
+        <div class="loc-num">03</div>
+        <div class="loc-info">
+          <h3>Yaarmag · Cedar City</h3>
+          <p>Opposite Carrefour, Yaarmag<br/>
+          <span class="ph">+976 7701 0220</span></p>
+        </div>
+        <div class="loc-arrow">→</div>
+      </div>
+
+    </div>
+
+    <div class="loc-map-wrap reveal">
+      <div class="loc-map-badge"><span class="dot"></span>Live Location</div>
+      <iframe id="locMap"
+        src="https://www.google.com/maps?q=Park%20Od%20Mall%2C%20Ulaanbaatar%2C%20Mongolia&z=13&output=embed"
+        loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade">
+      </iframe>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section id="cta-strip">
+  <h2>Bring the crew. <span class="kr">친구들과 함께!</span></h2>
+  <p>Tables fill up fast on weekends. Call ahead, book a booth, and we'll have the grill hot when you walk in.</p>
+  <a href="tel:+97677100220" class="btn-cta-black">Call · +976 7710 0220</a>
+</section>
+
+<!-- DANCHEONG STRIPE -->
+<div class="dancheong" aria-hidden="true">
+  <span></span><span></span><span></span><span></span><span></span>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div class="foot-grid">
+    <div class="foot-brand">
+      <div class="brand-logo">Soo<span class="pork">PORK</span></div>
+      <div class="brand-sub" style="margin-top:4px;">고기구이 · Korean Barbeque</div>
+      <p>Three locations across Ulaanbaatar. Korean BBQ in a lounge-style setting. Asian taste, Mongolian heart.</p>
+      <div class="foot-social">
+        <a href="https://www.instagram.com/soopork_cedar/" target="_blank" rel="noopener" title="Instagram">IG</a>
+        <a href="#" title="Facebook">FB</a>
+        <a href="tel:+97677100220" title="Call">☎</a>
+      </div>
+    </div>
+    <div class="foot-col">
+      <h4>Visit</h4>
+      <a href="#locations">Park Od Mall</a>
+      <a href="#locations">Sumber Tower</a>
+      <a href="#locations">Cedar City</a>
+    </div>
+    <div class="foot-col">
+      <h4>Eat</h4>
+      <a href="#signatures">Pork Belly</a>
+      <a href="#signatures">Galbi</a>
+      <a href="#signatures">Tteokbokki</a>
+      <a href="#signatures">Cocktails</a>
+    </div>
+    <div class="foot-col">
+      <h4>Contact</h4>
+      <p>+976 7710 0220</p>
+      <p>+976 7719 1166</p>
+      <p>Daily · 11:00 — 23:00</p>
+    </div>
+  </div>
+  <div class="foot-bot">
+    <div>© 2026 SooPork · Korean Barbeque Restaurant</div>
+    <div>Made with fire in Ulaanbaatar 🇲🇳</div>
+  </div>
+</footer>
+
+<script>
+// Nav scroll
+const nav=document.getElementById('nav');
+window.addEventListener('scroll',()=>{nav.classList.toggle('solid',window.scrollY>40);});
+
+// Mobile nav
+const ham=document.getElementById('ham'),mob=document.getElementById('mobnav'),mobc=document.getElementById('mobclose');
+ham.addEventListener('click',()=>mob.classList.add('open'));
+mobc.addEventListener('click',()=>mob.classList.remove('open'));
+mob.querySelectorAll('a').forEach(a=>a.addEventListener('click',()=>mob.classList.remove('open')));
+
+// Location switcher → updates Google Maps embed
+const map=document.getElementById('locMap');
+document.querySelectorAll('.loc-card').forEach(card=>{
+  card.addEventListener('click',()=>{
+    document.querySelectorAll('.loc-card').forEach(c=>c.classList.remove('active'));
+    card.classList.add('active');
+    const q=encodeURIComponent(card.dataset.q);
+    map.src=`https://www.google.com/maps?q=${q}&z=15&output=embed`;
+  });
+});
+
+// Reveal on scroll
+const io=new IntersectionObserver(entries=>{
+  entries.forEach(e=>{if(e.isIntersecting){e.target.classList.add('in');io.unobserve(e.target);}});
+},{threshold:.12});
+document.querySelectorAll('.reveal').forEach(el=>io.observe(el));
+
+// 3D Grill — subtle mouse parallax
+const grill=document.getElementById('grill');
+const heroRight=document.querySelector('.hero-right');
+heroRight.addEventListener('mousemove',e=>{
+  const r=heroRight.getBoundingClientRect();
+  const x=(e.clientX-r.left)/r.width-.5;
+  const y=(e.clientY-r.top)/r.height-.5;
+  grill.style.transform=`rotateX(${48 - y*12}deg) rotateZ(${-8 + x*6}deg)`;
+});
+heroRight.addEventListener('mouseleave',()=>{
+  grill.style.transform='';
+});
+</script>
+</body>
+</html>
