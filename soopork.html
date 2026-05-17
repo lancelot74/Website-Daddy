@@ -1281,6 +1281,7 @@ footer{background:#050505;padding:80px 5vw 30px;border-top:1px solid var(--line)
     <div>© 2026 SooPork · Korean Barbeque Restaurant</div>
     <div>Made with fire in Ulaanbaatar 🇲🇳</div>
   </div>
+  <div style="text-align:center;padding-top:16px;margin-top:8px;font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:rgba(154,154,154,0.4);">Made by <span style="color:rgba(46,232,92,0.55);">LuckyWeb</span></div>
 </footer>
 
 <script>
@@ -1323,6 +1324,30 @@ heroRight.addEventListener('mousemove',e=>{
 heroRight.addEventListener('mouseleave',()=>{
   grill.style.transform='';
 });
+</script>
+
+<!-- LuckyWeb Plugin — Card 3D Tilt -->
+<script>
+(() => {
+  if (matchMedia('(hover: none)').matches) return;
+  const MAX = 7;
+  document.querySelectorAll('.sig-card, .loc-card').forEach(card => {
+    let raf = 0;
+    card.addEventListener('pointermove', e => {
+      const r = card.getBoundingClientRect();
+      const rx = (0.5 - (e.clientY - r.top) / r.height) * MAX;
+      const ry = ((e.clientX - r.left) / r.width - 0.5) * MAX;
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+      });
+    });
+    card.addEventListener('pointerleave', () => {
+      cancelAnimationFrame(raf);
+      card.style.transform = '';
+    });
+  });
+})();
 </script>
 </body>
 </html>

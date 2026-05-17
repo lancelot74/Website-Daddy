@@ -576,6 +576,7 @@
     <a href="https://www.instagram.com/niji.dessert/" target="_blank">@niji.dessert</a>
   </p>
   <p style="margin-top:16px;font-size:0.78rem;opacity:0.4">© 2025 NIJI Dessert · Улаанбаатар, Монгол · ✦ бэлэгдэл дүүрэн</p>
+  <p style="margin-top:10px;font-size:0.7rem;opacity:0.3;letter-spacing:0.18em;text-transform:uppercase;">Made by LuckyWeb</p>
 </footer>
 
 <script>
@@ -616,6 +617,30 @@
       btn.classList.add('active');
     });
   });
+</script>
+
+<!-- LuckyWeb Plugin — Card 3D Tilt -->
+<script>
+(() => {
+  if (matchMedia('(hover: none)').matches) return;
+  const MAX = 7;
+  document.querySelectorAll('.menu-card, .why-card').forEach(card => {
+    let raf = 0;
+    card.addEventListener('pointermove', e => {
+      const r = card.getBoundingClientRect();
+      const rx = (0.5 - (e.clientY - r.top) / r.height) * MAX;
+      const ry = ((e.clientX - r.left) / r.width - 0.5) * MAX;
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+      });
+    });
+    card.addEventListener('pointerleave', () => {
+      cancelAnimationFrame(raf);
+      card.style.transform = '';
+    });
+  });
+})();
 </script>
 </body>
 </html>

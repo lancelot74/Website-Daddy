@@ -923,6 +923,7 @@
   </div>
   <div class="footer-bottom">
     <p>© 2025 Compliment Cakes · Yerevan, Armenia · Made with 💖 and great flour</p>
+    <p style="margin-top:8px;font-size:0.72rem;color:rgba(255,255,255,0.25);letter-spacing:0.1em;">Made by LuckyWeb</p>
   </div>
 </footer>
 
@@ -991,6 +992,30 @@
       if(el) { e.preventDefault(); el.scrollIntoView({behavior:'smooth'}); }
     });
   });
+</script>
+
+<!-- LuckyWeb Plugin — Card 3D Tilt -->
+<script>
+(() => {
+  if (matchMedia('(hover: none)').matches) return;
+  const MAX = 7;
+  document.querySelectorAll('.menu-card, .special-card, .test-card, .step').forEach(card => {
+    let raf = 0;
+    card.addEventListener('pointermove', e => {
+      const r = card.getBoundingClientRect();
+      const rx = (0.5 - (e.clientY - r.top) / r.height) * MAX;
+      const ry = ((e.clientX - r.left) / r.width - 0.5) * MAX;
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        card.style.transform = `perspective(900px) rotateX(${rx}deg) rotateY(${ry}deg)`;
+      });
+    });
+    card.addEventListener('pointerleave', () => {
+      cancelAnimationFrame(raf);
+      card.style.transform = '';
+    });
+  });
+})();
 </script>
 </body>
 </html>
