@@ -28,18 +28,41 @@
     ::-webkit-scrollbar-thumb { background: var(--hot-pink); border-radius: 10px; }
 
     /* ── STARFIELD ── */
-    #starfield { position: fixed; inset: 0; pointer-events: none; z-index: 0; overflow: hidden; }
-    .star { position: absolute; background: white; border-radius: 50%; animation: twinkle ease-in-out infinite; }
-    @keyframes twinkle {
-      0%,100% { opacity: 0.1; transform: scale(0.8); }
-      50%      { opacity: 1;   transform: scale(1.3); }
+    #starfield { position: fixed; inset: 0; pointer-events: none; z-index: 3; overflow: hidden; }
+    .star {
+      position: absolute; border-radius: 50%;
+      animation: twinkle ease-in-out infinite, starFloat ease-in-out infinite;
     }
-    .sparkle { position: absolute; pointer-events: none; animation: sparkleDrift linear infinite; font-size: 1.2rem; }
+    @keyframes twinkle {
+      0%,100% { opacity: 0.08; transform: scale(0.7); }
+      50%      { opacity: 1;    transform: scale(1.4); }
+    }
+    @keyframes starFloat {
+      0%,100% { margin-top: 0px; margin-left: 0px; }
+      25%     { margin-top: -6px; margin-left: 4px; }
+      50%     { margin-top: -10px; margin-left: -3px; }
+      75%     { margin-top: -4px; margin-left: 6px; }
+    }
+    .sparkle { position: absolute; pointer-events: none; animation: sparkleDrift linear infinite; }
     @keyframes sparkleDrift {
-      0%   { transform: translateY(0) rotate(0deg); opacity: 0; }
-      20%  { opacity: 1; }
-      80%  { opacity: 0.6; }
-      100% { transform: translateY(-110vh) rotate(360deg); opacity: 0; }
+      0%   { transform: translateY(0) rotate(0deg) scale(0.6); opacity: 0; }
+      15%  { opacity: 0.9; transform: translateY(-12vh) rotate(60deg) scale(1); }
+      80%  { opacity: 0.5; }
+      100% { transform: translateY(-110vh) rotate(420deg) scale(0.8); opacity: 0; }
+    }
+    .shooting-star {
+      position: absolute; pointer-events: none;
+      width: 120px; height: 1.5px;
+      background: linear-gradient(90deg, rgba(255,255,255,0), rgba(255,255,255,0.9), rgba(255,45,120,0.6));
+      border-radius: 2px;
+      animation: shoot linear infinite;
+      opacity: 0;
+    }
+    @keyframes shoot {
+      0%   { opacity: 0; transform: translateX(0) translateY(0); }
+      5%   { opacity: 1; }
+      60%  { opacity: 0.3; }
+      100% { opacity: 0; transform: translateX(280px) translateY(160px); }
     }
 
     /* ── NAV ── */
@@ -582,20 +605,71 @@
 <script>
   // Starfield
   const sf = document.getElementById('starfield');
-  for(let i=0;i<80;i++){
-    const s=document.createElement('div');
-    s.className='star';
-    const sz=Math.random()*3+1;
-    s.style.cssText=`width:${sz}px;height:${sz}px;top:${Math.random()*100}vh;left:${Math.random()*100}vw;animation-duration:${Math.random()*4+2}s;animation-delay:${Math.random()*4}s`;
+
+  // Star colours: mostly white, some pink/lavender/gold tints
+  const starColors = [
+    'rgba(255,255,255,0.95)',
+    'rgba(255,255,255,0.95)',
+    'rgba(255,255,255,0.95)',
+    'rgba(255,200,230,0.9)',  // pink tint
+    'rgba(196,181,253,0.9)',  // lavender tint
+    'rgba(255,240,180,0.85)', // warm gold tint
+    'rgba(150,230,255,0.85)', // icy blue tint
+  ];
+
+  // 220 twinkling stars spread across the full page
+  for(let i = 0; i < 220; i++){
+    const s = document.createElement('div');
+    s.className = 'star';
+    const sz = Math.random() * 3.2 + 0.6;
+    const color = starColors[Math.floor(Math.random() * starColors.length)];
+    const glowSize = sz > 2 ? `box-shadow:0 0 ${sz*4}px ${sz*2}px ${color};` : '';
+    s.style.cssText = [
+      `width:${sz}px`,
+      `height:${sz}px`,
+      `top:${Math.random()*100}vh`,
+      `left:${Math.random()*100}vw`,
+      `background:${color}`,
+      `animation-duration:${Math.random()*5+2}s,${Math.random()*18+10}s`,
+      `animation-delay:${Math.random()*6}s,${Math.random()*8}s`,
+      glowSize
+    ].join(';');
     sf.appendChild(s);
   }
-  const sprkls=['✦','✧','★','⭐','💫','✨'];
-  for(let i=0;i<20;i++){
-    const sp=document.createElement('div');
-    sp.className='sparkle';
-    sp.textContent=sprkls[Math.floor(Math.random()*sprkls.length)];
-    sp.style.cssText=`left:${Math.random()*100}vw;top:${Math.random()*100}vh;animation-duration:${Math.random()*14+8}s;animation-delay:${Math.random()*10}s;font-size:${Math.random()*16+8}px;opacity:0.5`;
+
+  // 38 drifting sparkle glyphs
+  const sprkls = ['✦','✧','✶','✷','★','✨','💫','⭐','🌟'];
+  for(let i = 0; i < 38; i++){
+    const sp = document.createElement('div');
+    sp.className = 'sparkle';
+    sp.textContent = sprkls[Math.floor(Math.random() * sprkls.length)];
+    const fs = Math.random() * 18 + 7;
+    sp.style.cssText = [
+      `left:${Math.random()*100}vw`,
+      `top:${Math.random()*110}vh`,
+      `animation-duration:${Math.random()*16+9}s`,
+      `animation-delay:${Math.random()*14}s`,
+      `font-size:${fs}px`,
+      `opacity:${Math.random()*0.5+0.2}`,
+      `filter:drop-shadow(0 0 4px rgba(255,45,120,0.7))`
+    ].join(';');
     sf.appendChild(sp);
+  }
+
+  // 8 shooting stars
+  for(let i = 0; i < 8; i++){
+    const sh = document.createElement('div');
+    sh.className = 'shooting-star';
+    const angle = Math.random() * 30 + 20; // 20–50 deg downward
+    sh.style.cssText = [
+      `top:${Math.random()*60}vh`,
+      `left:${Math.random()*80}vw`,
+      `transform:rotate(${angle}deg)`,
+      `animation-duration:${Math.random()*6+5}s`,
+      `animation-delay:${Math.random()*20}s`,
+      `width:${Math.random()*80+80}px`
+    ].join(';');
+    sf.appendChild(sh);
   }
 
   // Scroll reveal
