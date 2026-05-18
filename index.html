@@ -283,6 +283,12 @@
 </head>
 <body>
 
+<!-- GLOBAL NEON BACKGROUND -->
+<canvas id="neon-canvas" aria-hidden="true"></canvas>
+
+<!-- SCROLL PROGRESS -->
+<div id="scroll-bar"></div>
+
 <!-- NAV -->
 <nav>
   <a href="#" class="logo">Lucky<span>Web</span></a>
@@ -474,6 +480,261 @@
       setTimeout(() => { btn.textContent = 'Send Message →'; btn.style.background = ''; btn.style.color = ''; }, 3000);
     }
   }
+</script>
+
+<!-- NEON BLOB SHADER -->
+<script>
+(() => {
+  const canvas = document.getElementById('neon-canvas');
+  if (!canvas) return;
+  const gl = canvas.getContext('webgl', { antialias: false, alpha: false, premultipliedAlpha: false });
+  if (!gl) { canvas.style.background = 'radial-gradient(ellipse 60% 50% at 70% 30%, rgba(255,59,255,.35), transparent 70%), radial-gradient(ellipse 50% 50% at 20% 70%, rgba(0,207,255,.3), transparent 70%), radial-gradient(ellipse 40% 40% at 50% 50%, rgba(204,255,0,.2), transparent 70%)'; return; }
+
+  const VERT = `
+    attribute vec2 a_pos;
+    void main() { gl_Position = vec4(a_pos, 0.0, 1.0); }
+  `;
+
+  const FRAG = `
+    precision highp float;
+    uniform vec2  u_res;
+    uniform float u_time;
+    uniform vec2  u_mouse;
+    uniform float u_burst;
+    uniform float u_scroll;
+
+    const vec3 PINK = vec3(1.000, 0.231, 1.000);
+    const vec3 LIME = vec3(0.800, 1.000, 0.000);
+    const vec3 SKY  = vec3(0.000, 0.812, 1.000);
+
+    float hash21(vec2 p){ return fract(sin(dot(p,vec2(127.1,311.7)))*43758.5453); }
+
+    vec4 smin4(vec4 a, vec4 b, float k){
+      float h = clamp(0.5 + 0.5*(b.a - a.a)/k, 0.0, 1.0);
+      float d = mix(b.a, a.a, h) - k*h*(1.0-h);
+      vec3  c = mix(b.rgb, a.rgb, h);
+      return vec4(c, d);
+    }
+    vec4 ball(vec3 p, vec3 c, float r, vec3 col){
+      return vec4(col, length(p-c) - r);
+    }
+
+    vec4 map(vec3 p){
+      float t  = u_time * 0.35;
+      float s  = u_scroll;
+      float sy = s * 2.4;
+      vec3 p1 = vec3(sin(t*0.90)*1.55,                cos(t*0.80)*1.05 - sy*0.6, sin(t*0.60)*1.20);
+      vec3 p2 = vec3(cos(t*0.70)*1.65 + sin(s*3.1)*0.6, sin(t*1.10)*1.10 - sy*0.4, cos(t*0.90)*1.30);
+      vec3 p3 = vec3(sin(t*1.20)*1.20,                cos(t*0.60)*1.40 + sin(s*1.8)*0.5, sin(t*0.50)*1.00 - sy*0.2);
+      vec3 p4 = vec3(cos(t*0.50)*1.85 - sin(s*2.4)*0.7, sin(t*0.45)*0.75 + cos(s*1.5)*0.5, cos(t*1.00)*1.50);
+      vec3 pm = vec3(u_mouse.x*2.35, u_mouse.y*1.45, 0.55 + sin(u_time*0.6)*0.18);
+
+      float burst = 1.0 + u_burst*0.55;
+
+      vec4 d = ball(p, p1, 0.90,                                PINK);
+      d = smin4(d, ball(p, p2, 0.78,                            LIME), 1.00);
+      d = smin4(d, ball(p, p3, 0.72,                            SKY ), 1.00);
+      d = smin4(d, ball(p, p4, 0.62, mix(PINK, SKY, 0.5)),            1.05);
+      d = smin4(d, ball(p, pm, 0.55 * burst, mix(LIME, PINK, 0.5)),   0.85);
+      return d;
+    }
+
+    vec3 calcN(vec3 p){
+      vec2 e = vec2(0.0025, 0.0);
+      return normalize(vec3(
+        map(p+e.xyy).a - map(p-e.xyy).a,
+        map(p+e.yxy).a - map(p-e.yxy).a,
+        map(p+e.yyx).a - map(p-e.yyx).a
+      ));
+    }
+
+    void main(){
+      vec2 uv = (gl_FragCoord.xy - 0.5*u_res) / u_res.y;
+
+      vec3 ro = vec3(0.0, 0.0, 4.6);
+      vec3 rd = normalize(vec3(uv, -1.45));
+
+      vec3 glow = vec3(0.0);
+      float t = 0.0;
+      bool hit = false;
+      vec3 surf = vec3(0.0);
+      vec3 hp = vec3(0.0);
+
+      for (int i = 0; i < 78; i++){
+        vec3 p = ro + rd*t;
+        vec4 d = map(p);
+        if (d.a < 0.0025) { hit = true; surf = d.rgb; hp = p; break; }
+        if (t > 14.0) break;
+        glow += d.rgb * 0.0040 / (0.045 + d.a*d.a);
+        t += max(d.a * 0.62, 0.018);
+      }
+
+      vec3 col = glow * 0.55;
+
+      if (hit){
+        vec3 n = calcN(hp);
+        float rim = pow(1.0 - max(0.0, dot(n, -rd)), 2.4);
+        vec3 ld = normalize(vec3(0.4, 0.7, 0.85));
+        float diff = max(0.0, dot(n, ld));
+        col += surf * (0.18 + diff*0.32);
+        col += surf * rim * 1.85;
+        vec3 h = normalize(-rd + ld);
+        col += vec3(1.0) * pow(max(0.0, dot(n,h)), 32.0) * 0.6;
+      }
+
+      col += vec3(0.045, 0.020, 0.085) * (1.0 - smoothstep(0.0, 1.3, length(uv)));
+      col *= 1.0 - 0.55 * pow(length(uv * vec2(0.55, 0.45)), 1.5);
+      float g = hash21(gl_FragCoord.xy + u_time*0.05);
+      col += (g - 0.5) * 0.028;
+      col = col / (1.0 + col*0.85);
+      col = pow(col, vec3(0.92));
+
+      gl_FragColor = vec4(col, 1.0);
+    }
+  `;
+
+  function compile(type, src){
+    const s = gl.createShader(type);
+    gl.shaderSource(s, src); gl.compileShader(s);
+    if (!gl.getShaderParameter(s, gl.COMPILE_STATUS)) {
+      console.error(gl.getShaderInfoLog(s)); gl.deleteShader(s); return null;
+    }
+    return s;
+  }
+  const vs = compile(gl.VERTEX_SHADER, VERT);
+  const fs = compile(gl.FRAGMENT_SHADER, FRAG);
+  if (!vs || !fs) return;
+  const prog = gl.createProgram();
+  gl.attachShader(prog, vs); gl.attachShader(prog, fs); gl.linkProgram(prog);
+  gl.useProgram(prog);
+
+  const buf = gl.createBuffer();
+  gl.bindBuffer(gl.ARRAY_BUFFER, buf);
+  gl.bufferData(gl.ARRAY_BUFFER, new Float32Array([-1,-1, 1,-1, -1,1, 1,1]), gl.STATIC_DRAW);
+  const aPos = gl.getAttribLocation(prog, 'a_pos');
+  gl.enableVertexAttribArray(aPos);
+  gl.vertexAttribPointer(aPos, 2, gl.FLOAT, false, 0, 0);
+
+  const uRes    = gl.getUniformLocation(prog, 'u_res');
+  const uTime   = gl.getUniformLocation(prog, 'u_time');
+  const uMouse  = gl.getUniformLocation(prog, 'u_mouse');
+  const uBurst  = gl.getUniformLocation(prog, 'u_burst');
+  const uScroll = gl.getUniformLocation(prog, 'u_scroll');
+
+  const reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const isMobile = matchMedia('(max-width: 700px)').matches;
+  const dprCap = isMobile ? 1.25 : 1.75;
+
+  function resize(){
+    const dpr = Math.min(window.devicePixelRatio || 1, dprCap);
+    const w = Math.max(1, Math.round(window.innerWidth  * dpr));
+    const h = Math.max(1, Math.round(window.innerHeight * dpr));
+    if (canvas.width !== w || canvas.height !== h){
+      canvas.width = w; canvas.height = h;
+      gl.viewport(0, 0, w, h);
+    }
+  }
+
+  let mx = 0, my = 0, tmx = 0, tmy = 0;
+  let burst = 0;
+  let visible = true;
+  let scrollEased = 0;
+  const scrollBar = document.getElementById('scroll-bar');
+
+  window.addEventListener('mousemove', (e) => {
+    const r = canvas.getBoundingClientRect();
+    tmx = ((e.clientX - r.left) / r.width) * 2 - 1;
+    tmy = -(((e.clientY - r.top) / r.height) * 2 - 1);
+  }, { passive: true });
+
+  window.addEventListener('touchmove', (e) => {
+    if (!e.touches.length) return;
+    const r = canvas.getBoundingClientRect();
+    tmx = ((e.touches[0].clientX - r.left) / r.width) * 2 - 1;
+    tmy = -(((e.touches[0].clientY - r.top) / r.height) * 2 - 1);
+  }, { passive: true });
+
+  document.getElementById('hero').addEventListener('pointerdown', () => { burst = 1.0; });
+  document.addEventListener('visibilitychange', () => { visible = !document.hidden; });
+  window.addEventListener('resize', resize);
+  resize();
+
+  const t0 = performance.now();
+  function frame(){
+    if (visible) {
+      resize();
+      mx += (tmx - mx) * 0.06;
+      my += (tmy - my) * 0.06;
+      burst *= 0.92;
+
+      const scroll = window.scrollY;
+      const max = Math.max(1, document.documentElement.scrollHeight - window.innerHeight);
+      const scrollTarget = scroll / max;
+      scrollEased += (scrollTarget - scrollEased) * 0.08;
+      if (scrollBar) scrollBar.style.width = (scrollTarget * 100).toFixed(2) + '%';
+
+      const t = (performance.now() - t0) / 1000;
+      gl.uniform2f(uRes, canvas.width, canvas.height);
+      gl.uniform1f(uTime, reduced ? 0.0 : t);
+      gl.uniform2f(uMouse, mx, my);
+      gl.uniform1f(uBurst, burst);
+      gl.uniform1f(uScroll, scrollEased);
+      gl.drawArrays(gl.TRIANGLE_STRIP, 0, 4);
+    }
+    requestAnimationFrame(frame);
+  }
+  requestAnimationFrame(frame);
+})();
+</script>
+
+<!-- CARD 3D TILT + MAGNETIC BUTTONS -->
+<script>
+(() => {
+  if (matchMedia('(hover: none)').matches) return;
+
+  // magnetic buttons
+  document.querySelectorAll('.magnet').forEach(btn => {
+    let raf = 0;
+    btn.addEventListener('pointermove', (e) => {
+      const r = btn.getBoundingClientRect();
+      const dx = e.clientX - (r.left + r.width / 2);
+      const dy = e.clientY - (r.top + r.height / 2);
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        btn.style.transform = `translate(${dx * 0.25}px, ${dy * 0.35}px)`;
+      });
+    });
+    btn.addEventListener('pointerleave', () => {
+      cancelAnimationFrame(raf);
+      btn.style.transform = '';
+    });
+  });
+
+  const cards = document.querySelectorAll('.service-card, .work-card, .team-card');
+  const MAX = 8;
+  cards.forEach(card => {
+    let raf = 0;
+    function onMove(e){
+      const r = card.getBoundingClientRect();
+      const px = (e.clientX - r.left) / r.width;
+      const py = (e.clientY - r.top) / r.height;
+      const rx = (0.5 - py) * MAX;
+      const ry = (px - 0.5) * MAX;
+      card.style.setProperty('--gx', (px*100) + '%');
+      card.style.setProperty('--gy', (py*100) + '%');
+      cancelAnimationFrame(raf);
+      raf = requestAnimationFrame(() => {
+        card.style.transform = `rotateX(${rx}deg) rotateY(${ry}deg) translateZ(0)`;
+      });
+    }
+    function onLeave(){
+      cancelAnimationFrame(raf);
+      card.style.transform = '';
+    }
+    card.addEventListener('pointermove', onMove);
+    card.addEventListener('pointerleave', onLeave);
+  });
+})();
 </script>
 
 </body>
