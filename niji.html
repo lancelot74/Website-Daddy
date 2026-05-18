@@ -33,18 +33,17 @@
       top: 0; left: 0;
       width: 100%;
       pointer-events: none;
-      z-index: 1;
-      mix-blend-mode: screen;
+      z-index: 2;
     }
     .star {
       position: absolute;
       border-radius: 50%;
-      background: white;
+      background: rgba(255,255,255,0.9);
       animation: twinkle ease-in-out infinite;
     }
     @keyframes twinkle {
-      0%,100% { opacity: 0.05; transform: scale(0.7); }
-      50%      { opacity: 0.55; transform: scale(1.2); }
+      0%,100% { opacity: 0.1; }
+      50%      { opacity: 0.5; }
     }
 
     /* ── NAV ── */
