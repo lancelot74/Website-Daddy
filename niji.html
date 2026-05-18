@@ -29,21 +29,20 @@
 
     /* ── STARFIELD ── */
     #starfield {
-      position: absolute;
-      top: 0; left: 0;
-      width: 100%;
+      position: fixed;
+      inset: 0;
       pointer-events: none;
-      z-index: 2;
+      z-index: 0;
     }
     .star {
       position: absolute;
       border-radius: 50%;
-      background: rgba(255,255,255,0.9);
+      background: white;
       animation: twinkle ease-in-out infinite;
     }
     @keyframes twinkle {
       0%,100% { opacity: 0.1; }
-      50%      { opacity: 0.5; }
+      50%      { opacity: 0.55; }
     }
 
     /* ── NAV ── */
@@ -117,7 +116,7 @@
     .sec-lead { font-size: 1.05rem; color: rgba(255,255,255,0.65); line-height: 1.8; max-width: 560px; margin-top: 14px; }
 
     /* ── WHY NIJI ── */
-    #why { padding: 110px 0; background: linear-gradient(180deg, #0D0B22 0%, #1A1740 100%); }
+    #why { padding: 110px 0; }
     .why-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 60px; align-items: center; margin-top: 56px; }
     .why-cards { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
     .why-card { background: rgba(196,181,253,0.06); border: 1px solid rgba(196,181,253,0.15); border-radius: 24px; padding: 28px 24px; transition: all 0.3s; }
@@ -132,7 +131,7 @@
     .stat-label { font-size: 0.8rem; color: var(--lavender); margin-top: 4px; font-weight: 600; letter-spacing: 0.05em; }
 
     /* ── MENU ── */
-    #menu { padding: 110px 0; background: #0D0B22; }
+    #menu { padding: 110px 0; }
     .menu-tabs { display: flex; gap: 12px; flex-wrap: wrap; margin: 40px 0 36px; }
     .tab-btn { background: rgba(196,181,253,0.08); border: 1px solid rgba(196,181,253,0.2); color: var(--lavender); border-radius: 60px; padding: 10px 24px; font-family: "Quicksand", sans-serif; font-weight: 700; font-size: 0.85rem; cursor: pointer; transition: all 0.25s; }
     .tab-btn.active, .tab-btn:hover { background: var(--hot-pink); border-color: var(--hot-pink); color: white; }
@@ -148,7 +147,7 @@
     .menu-badge { display: inline-block; margin-top: 10px; background: rgba(255,45,120,0.15); border: 1px solid rgba(255,45,120,0.3); border-radius: 60px; padding: 4px 12px; font-size: 0.72rem; color: var(--pink); font-weight: 700; }
 
     /* ── GALLERY ── */
-    #gallery { padding: 110px 0; background: linear-gradient(180deg, #0D0B22 0%, #1A1740 100%); }
+    #gallery { padding: 110px 0; }
     .gallery-grid { display: grid; grid-template-columns: 1fr 1fr 1fr; grid-template-rows: auto auto; gap: 20px; margin-top: 48px; }
     .gal-item { border-radius: 28px; overflow: hidden; border: 1px solid rgba(196,181,253,0.15); transition: all 0.35s; cursor: pointer; }
     .gal-item:hover { transform: scale(1.03); border-color: rgba(255,45,120,0.4); box-shadow: 0 20px 50px rgba(255,45,120,0.2); }
@@ -160,7 +159,7 @@
     .gal-item.wide img { height: 240px; }
 
     /* ── CUSTOM ORDER ── */
-    #custom { padding: 110px 0; background: linear-gradient(135deg, #2D2A6E 0%, #1A1740 60%, #2D1840 100%); }
+    #custom { padding: 110px 0; }
     .custom-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center; margin-top: 56px; }
     .custom-types { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
     .custom-type { background: rgba(255,255,255,0.04); border: 1px solid rgba(196,181,253,0.2); border-radius: 20px; padding: 22px 20px; display: flex; align-items: center; gap: 14px; transition: all 0.3s; }
@@ -173,7 +172,7 @@
     .custom-cta-box p { font-size: 0.92rem; color: rgba(255,255,255,0.6); line-height: 1.7; margin-bottom: 24px; }
 
     /* ── LOCATION ── */
-    #location { padding: 110px 0; background: #0D0B22; }
+    #location { padding: 110px 0; }
     .loc-grid { display: grid; grid-template-columns: 1fr 1.5fr; gap: 48px; align-items: start; margin-top: 56px; }
     .loc-card { background: rgba(196,181,253,0.05); border: 1px solid rgba(196,181,253,0.15); border-radius: 32px; padding: 40px; }
     .loc-row { display: flex; align-items: flex-start; gap: 16px; padding: 20px 0; border-bottom: 1px solid rgba(196,181,253,0.1); }
@@ -188,7 +187,7 @@
     .open-map-btn:hover { transform: translateY(-3px); box-shadow: 0 12px 32px rgba(255,45,120,0.5); }
 
     /* ── SOCIAL ── */
-    #social { padding: 100px 0; background: linear-gradient(180deg, #0D0B22 0%, #1A1740 100%); text-align: center; }
+    #social { padding: 100px 0; text-align: center; }
     .ig-handle { font-family: "Fredoka One", cursive; font-size: 3rem; color: white; margin: 20px 0; }
     .ig-handle span { color: var(--hot-pink); text-shadow: 0 0 30px rgba(255,45,120,0.6); }
     .ig-btn { display: inline-flex; align-items: center; gap: 12px; background: linear-gradient(135deg, #E1306C, #833AB4, #405DE6); color: white; text-decoration: none; padding: 16px 44px; border-radius: 60px; font-weight: 700; font-size: 1rem; box-shadow: 0 10px 32px rgba(225,48,108,0.45); transition: all 0.3s; margin-top: 8px; }
@@ -196,7 +195,7 @@
     .follower-pill { display: inline-flex; align-items: center; gap: 8px; background: rgba(255,45,120,0.1); border: 1px solid rgba(255,45,120,0.3); border-radius: 60px; padding: 8px 22px; font-size: 0.85rem; color: var(--pink); font-weight: 700; margin-bottom: 24px; }
 
     /* ── FOOTER ── */
-    footer { background: #080618; color: rgba(196,181,253,0.5); text-align: center; padding: 48px 24px; font-size: 0.84rem; }
+    footer { background: transparent; color: rgba(196,181,253,0.5); text-align: center; padding: 48px 24px; font-size: 0.84rem; }
     .foot-logo { font-family: "Fredoka One", cursive; font-size: 2.2rem; color: var(--hot-pink); display: block; margin-bottom: 12px; text-shadow: 0 0 30px rgba(255,45,120,0.4); }
     footer a { color: var(--lavender); text-decoration: none; }
     .foot-divider { width: 60px; height: 2px; background: linear-gradient(to right, var(--hot-pink), var(--lavender)); margin: 20px auto; border-radius: 2px; }
@@ -584,22 +583,19 @@
 </footer>
 
 <script>
-  // Starfield — subtle, scrolls with the page
+  // Starfield — fixed backdrop behind all sections
   const sf = document.getElementById('starfield');
-  const pageH = document.documentElement.scrollHeight;
-  sf.style.height = pageH + 'px';
-
-  for (let i = 0; i < 110; i++) {
+  for (let i = 0; i < 120; i++) {
     const s = document.createElement('div');
     s.className = 'star';
-    const sz = Math.random() * 1.8 + 0.5;
+    const sz = Math.random() * 1.8 + 0.4;
     s.style.cssText = [
       `width:${sz}px`,
       `height:${sz}px`,
-      `top:${Math.random() * pageH}px`,
-      `left:${Math.random() * 100}vw`,
-      `animation-duration:${Math.random() * 4 + 2.5}s`,
-      `animation-delay:${Math.random() * 5}s`
+      `top:${Math.random() * 100}%`,
+      `left:${Math.random() * 100}%`,
+      `animation-duration:${Math.random() * 4 + 2}s`,
+      `animation-delay:${Math.random() * 6}s`
     ].join(';');
     sf.appendChild(s);
   }
