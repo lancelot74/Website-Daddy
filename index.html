@@ -438,6 +438,14 @@
   </div>
 </section>
 
+<!-- LANG SWITCHER -->
+<div class="lang-float">
+  <span class="lang-float-label">🌐</span>
+  <button class="lang-btn active" onclick="setLang('en')">EN</button>
+  <button class="lang-btn" onclick="setLang('mn')">MN</button>
+  <button class="lang-btn" onclick="setLang('hy')">HY</button>
+</div>
+
 <!-- FOOTER -->
 <footer>
   <a href="#" class="logo">Lucky<span>Web</span></a>
@@ -450,6 +458,63 @@
 </footer>
 
 <script>
+  // ── TRANSLATIONS ─────────────────────────────────────────────────────────
+  const T = {
+    en: {
+      nav_services: 'Services', nav_work: 'Work', nav_pricing: 'Pricing', nav_cta: 'Get a Website',
+      hero_cta1: 'Start a Project', hero_cta2: 'See Our Work', scroll_cue: 'Scroll',
+      lbl_services: 'Services', lbl_work: 'Work', lbl_pricing: 'Pricing', lbl_contact: 'Contact',
+      svc1_title: 'Design', svc1_desc: 'Clean, modern visuals crafted to match your brand and impress your customers.',
+      svc2_title: 'Development', svc2_desc: 'Fast, responsive websites built with the latest tech — no templates, no shortcuts.',
+      svc3_title: 'Launch & Support', svc3_desc: 'We handle hosting, domain, and ongoing updates so you can focus on your business.',
+      pricing_desc: 'Every website is custom-built for your business. We work fast — most sites are completed in <strong style="color:var(--lime)">as little as 2 days</strong>. Get in touch and we\'ll put together a quote based on what you need.',
+      pricing_cta: 'Get a Quote →',
+      form_name: 'Your Name', form_email: 'Email Address', form_type: 'Website Type',
+      form_msg: 'Tell us about your project…', form_submit: 'Send Message →',
+      footer_copy: '© 2025 LuckyWeb. All rights reserved.',
+    },
+    mn: {
+      nav_services: 'Үйлчилгээ', nav_work: 'Ажлууд', nav_pricing: 'Үнэ', nav_cta: 'Вэбсайт авах',
+      hero_cta1: 'Төсөл эхлүүлэх', hero_cta2: 'Ажлуудыг үзэх', scroll_cue: 'Гүйлгэх',
+      lbl_services: 'Үйлчилгээ', lbl_work: 'Ажлууд', lbl_pricing: 'Үнэ', lbl_contact: 'Холбоо барих',
+      svc1_title: 'Дизайн', svc1_desc: 'Таны брэндэд тохирсон цэвэр, орчин үеийн дизайн.',
+      svc2_title: 'Хөгжүүлэлт', svc2_desc: 'Хурдан, responsive вэбсайт — загвар биш, өөрийн шийдэл.',
+      svc3_title: 'Нэвтрүүлэлт & Дэмжлэг', svc3_desc: 'Хостинг, домэйн болон шинэчлэлтийг бид хариуцна.',
+      pricing_desc: 'Бүх вэбсайтыг таны бизнест тааруулж хийдэг. Ихэнх сайтыг <strong style="color:var(--lime)">2 хоногт</strong> дуусгадаг. Бидэнтэй холбогдоорой.',
+      pricing_cta: 'Үнийн санал авах →',
+      form_name: 'Таны нэр', form_email: 'Имэйл хаяг', form_type: 'Вэбсайтын төрөл',
+      form_msg: 'Төслийн талаар ярина уу…', form_submit: 'Илгээх →',
+      footer_copy: '© 2025 LuckyWeb. Бүх эрх хуулиар хамгаалагдсан.',
+    },
+    hy: {
+      nav_services: 'Ծառայություններ', nav_work: 'Աշխատանքներ', nav_pricing: 'Գնացուցակ', nav_cta: 'Կայք ստանալ',
+      hero_cta1: 'Սկսել նախագիծ', hero_cta2: 'Տեսնել աշխատանքները', scroll_cue: 'Ոլորել',
+      lbl_services: 'Ծառայություններ', lbl_work: 'Աշխատանքներ', lbl_pricing: 'Գնացուցակ', lbl_contact: 'Կապ',
+      svc1_title: 'Դիզայն', svc1_desc: 'Մաքուր, ժամանակակից տեսք՝ ձեր բրենդին հարմար։',
+      svc2_title: 'Մշակում', svc2_desc: 'Արագ, responsive կայքեր՝ առանց կաղապարների։',
+      svc3_title: 'Գործարկում & Աջակցություն', svc3_desc: 'Հոսթինգ, դոմեն և թարմացումներ — ամեն ինչ մեր վրա։',
+      pricing_desc: 'Յուրաքանչյուր կայք ստեղծվում է ձեր բիզնեսի համար։ Ավարտում ենք <strong style="color:var(--lime)">2 օրում</strong>։ Կապվեք մեզ հետ գնի համար։',
+      pricing_cta: 'Ստանալ գնային առաջարկ →',
+      form_name: 'Ձեր անունը', form_email: 'Էլ. հասցե', form_type: 'Կայքի տեսակ',
+      form_msg: 'Պատմեք ձեր նախագծի մասին…', form_submit: 'Ուղարկել →',
+      footer_copy: '© 2025 LuckyWeb. Բոլոր իրավունքները պաշտպանված են։',
+    },
+  };
+
+  let currentLang = 'en';
+  function setLang(lang) {
+    currentLang = lang;
+    const dict = T[lang];
+    document.querySelectorAll('[data-t]').forEach(el => {
+      const key = el.dataset.t;
+      if (dict[key] !== undefined) {
+        if (el.tagName === 'INPUT' || el.tagName === 'TEXTAREA') el.placeholder = dict[key];
+        else el.innerHTML = dict[key];
+      }
+    });
+    document.querySelectorAll('.lang-btn').forEach(b => b.classList.toggle('active', b.textContent === lang.toUpperCase()));
+  }
+
   const obs = new IntersectionObserver((entries) => {
     entries.forEach(e => { if (e.isIntersecting) { e.target.classList.add('visible'); obs.unobserve(e.target); } });
   }, { threshold: 0.1 });
